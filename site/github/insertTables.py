@@ -34,7 +34,6 @@ def insertUser(id, fav_repository,nick_name):
         curs.execute(sql, (id, fav_repository, nick_name, result, result, result))
 
         conn.commit()
-
     except Exception as e:
         if conn != None :
             conn.rollback()
