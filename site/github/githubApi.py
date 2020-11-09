@@ -15,7 +15,7 @@ def getRepositoryInfo(fav_repository,flag) :
     dataList = [] #0번째는 생성날짜,1번째는 업데이트날짜, 2번째는 git api 주소
     try:
         http = httplib2.Http()
-        response, content = http.request(url, 'GET',headers={'Authorization':'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'})
+        response, content = http.request(url, 'GET')
         jsonObject = json.loads(content)
 
         create_at = jsonObject.get("created_at").replace("T"," ").replace("Z","") # 기본적으로 붙어있는 T와 Z를 없앰
