@@ -26,7 +26,7 @@ SECRET_KEY = 'u5smkm#@a%l28wey*)tc)2!^x66xm73)8a(3up+9p!7@t2x-3$'
 DEBUG = True
 
 ALLOWED_HOSTS = ['margarets.pythonanywhere.com']
-
+#ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -37,7 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'django_crontab',
+    'api',
     'page'
+]
+
+CRONJOBS = [
+    ('*/1 * * * *', 'RepoKaKaoAlarm.cron.batch')
 ]
 
 MIDDLEWARE = [
@@ -76,6 +83,12 @@ WSGI_APPLICATION = 'RepoKaKaoAlarm.wsgi.application'
 
 DATABASES = {
     'default': {
+        #'ENGINE': 'django.db.backends.mysql',
+        #'NAME': 'open_source',
+        #'USER': 'root',
+        #'PASSWORD': '1234',
+        #'HOST': 'localhost',
+        #'PORT': '3306',
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'margarets$repoalarm',
         'USER': 'margarets',
@@ -102,7 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
