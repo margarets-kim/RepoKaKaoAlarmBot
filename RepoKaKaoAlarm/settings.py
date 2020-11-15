@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('*/1 * * * *', 'RepoKaKaoAlarm.cron.batch')
+    ('*/1 * * * *', 'RepoKaKaoAlarm.cron.batch','>> /path/to/log/file.log'),
 ]
 
 MIDDLEWARE = [
@@ -93,7 +93,8 @@ DATABASES = {
         'NAME': 'margarets$repoalarm',
         'USER': 'margarets',
         'PASSWORD': 'db20192808',
-        'HOST': 'margarets.mysql.pythonanywhere-services.com'
+        'HOST': 'margarets.mysql.pythonanywhere-services.com',
+        'PORT' : '3306'
     }
 }
 
