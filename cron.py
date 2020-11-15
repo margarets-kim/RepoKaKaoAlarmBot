@@ -1,4 +1,4 @@
-import MySQLdb
+import MySQLdb,threading
 from api.githubApi import getRepositoryInfo
 
 def batch():
@@ -37,4 +37,5 @@ def batch():
     finally:
         if conn != None:
             conn.close()
+        threading.Timer(3600,batch()).start()
 batch()
