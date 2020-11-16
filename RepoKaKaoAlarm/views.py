@@ -7,10 +7,7 @@ class ReactAppView(View):
 
     def get(self, request):
         try:
-            with open(os.path.join(str(settings.BASE_DIR),
-                                    'front',
-                                    'build',
-                                    'index.html')) as file:
+            with open(os.path.join('front','build','index.html')) as file:
                 return HttpResponse(file.read())
 
         except:

@@ -28,6 +28,11 @@ DEBUG = True
 ALLOWED_HOSTS = ['margarets.pythonanywhere.com','localhost']
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+)
+
 # Application definition
 
 INSTALLED_APPS = [
