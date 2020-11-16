@@ -142,12 +142,10 @@ STATIC_URL = '/static/'
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
 MEDIA_ROOT = '/home/margarets/RepoKaKaoAlarm/media'
 MEDIA_URL = '/media/'
-FRONT_ROOT = '/home/margarets/RepoKaKaoAlarm/front'
-FRONT_URL = '/front/'
-BUILD_ROOT = '/home/margarets/RepoKaKaoAlarm/build'
-BUILD_URL = '/build/'
+
 STATIC_ROOT = '/home/margarets/RepoKaKaoAlarm/static'
 STATIC_URL = '/static/'
 
+FRONT_ROOT = '/home/margarets/RepoKaKaoAlarm/front/build/static'
 
 CORS_ORIGIN_ALLOW_ALL = True
