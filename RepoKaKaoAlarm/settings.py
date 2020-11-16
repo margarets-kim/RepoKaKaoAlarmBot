@@ -138,6 +138,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+FRONT_ROOT = '/home/margarets/RepoKaKaoAlarm/front/build/static'
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
 MEDIA_ROOT = '/home/margarets/RepoKaKaoAlarm/media'
@@ -146,6 +147,6 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = '/home/margarets/RepoKaKaoAlarm/static'
 STATIC_URL = '/static/'
 
-FRONT_ROOT = '/home/margarets/RepoKaKaoAlarm/front/build/static'
+
 
 CORS_ORIGIN_ALLOW_ALL = True
