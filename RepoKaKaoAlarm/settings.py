@@ -136,8 +136,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
-
+FRONT_URL = '/front/'
 FRONT_ROOT = '/home/margarets/RepoKaKaoAlarm/front/build/static'
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
