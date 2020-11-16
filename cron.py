@@ -1,4 +1,4 @@
-import MySQLdb
+import MySQLdb,threading
 from api.githubApi import getRepositoryInfo
 
 def batch():
