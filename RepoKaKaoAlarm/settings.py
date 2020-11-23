@@ -43,8 +43,12 @@ INSTALLED_APPS = [
     'page'
 ]
 
+REST_FRAMEWORK = [
+    'DEFALUT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',)
+]
+
 CRONJOBS = [
-    ('*/1 * * * *', 'RepoKaKaoAlarm.cron.batch','>> /path/to/log/file.log'),
+    ('*/1 * * * *', 'RepoKaKaoAlarm.cron.batch', '>> /path/to/log/file.log'),
 ]
 
 MIDDLEWARE = [
@@ -83,18 +87,18 @@ WSGI_APPLICATION = 'RepoKaKaoAlarm.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.mysql',
-        #'NAME': 'open_source',
-        #'USER': 'root',
-        #'PASSWORD': '1234',
-        #'HOST': 'localhost',
-        #'PORT': '3306',
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'open_source',
+        # 'USER': 'root',
+        # 'PASSWORD': '1234',
+        # 'HOST': 'localhost',
+        # 'PORT': '3306',
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'margarets$repoalarm',
         'USER': 'margarets',
         'PASSWORD': 'db20192808',
         'HOST': 'margarets.mysql.pythonanywhere-services.com',
-        'PORT' : '3306'
+        'PORT': '3306'
     }
 }
 
