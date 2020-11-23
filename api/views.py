@@ -11,7 +11,7 @@ def barcode(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
     return_str=return_json_str['action']['name']
-    return_str_git=return_json_str['action']['detailParams']['barcode']['value'].barcodeData
+    return_str_git=return_json_str['action']['detailParams']['barcode']['value']['barcodeData']
     return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
     return_str_alias={'alias':'첫번째 레포다'}
     data={  'fav_repository':return_str_git,
