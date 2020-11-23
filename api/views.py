@@ -41,9 +41,9 @@ def barcode(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
     return_str=return_json_str['action']['name']
-    return_str_git=return_json_str['action']['detailParams']['value']
+    return_str_git=return_json_str['action']['detailParams']['barcode']['value']
 
-    if return_str == 'QR코드 값 전송':
+    if return_str == '바코드':
         print(return_str_git)
         return JsonResponse({
             'version': "2.0",
