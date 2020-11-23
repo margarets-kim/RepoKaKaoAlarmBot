@@ -9,7 +9,6 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 class KakaoInfo(APIView):
     def post(self, request):
-
         result = request.data
         print(request)
         return Response('okay', status=200)
