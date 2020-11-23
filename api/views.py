@@ -4,8 +4,7 @@ from rest_framework.response import Response
 from . import githubApi
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import json
-import requests
+import json, requests
 
 class UserView(APIView):
     def post(self, request):
@@ -51,7 +50,6 @@ class UserView(APIView):
             if conn != None:
                 conn.close()
 
-    
 
 @csrf_exempt
 def barcode(request):
@@ -68,7 +66,7 @@ def barcode(request):
     #return_str_alias=return_json_str['action']['detailParams']['barcode']['value']
 
     if return_str == '바코드':
-        res=request.UserView.as_view().post("http://margarets.pythonanywhere.com/api/", data=data)
+        res=request.post("http://margarets.pythonanywhere.com/api/", data=data)
         print(res.status_code)
         print(return_str_git)
         print(return_str_id)
