@@ -8,7 +8,7 @@ from django.http import HttpResponse, JsonResponse
 class KakaoInfo(APIView):
     def post(self, request):
 
-        result = reqeust.data
+        result = request.data
         print(request)
         return Response('okay', status=200)
         '''repository_url = request.POST.get('repoURL', '')
