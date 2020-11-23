@@ -14,10 +14,15 @@ def barcode(request):
     return_str_git=return_json_str['action']['detailParams']['barcode']['value']
     return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
     return_str_alias={'alias':'첫번째 레포다'}
-    #data={'fav_repository':return_str_git.}
+    data={  'fav_repository':return_str_git.barcodeData,
+            'nick_name':return_str_alias.alias,
+            'id':return_str_id
+    }
     #return_str_alias=return_json_str['action']['detailParams']['barcode']['value']
 
     if return_str == '바코드':
+        res=request.post("http://margarets.pythonanywhere.com/api/", data=data)
+        print(res.status_code)
         print(return_str_git)
         print(return_str_id)
         print(return_str_alias)
