@@ -7,37 +7,6 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import requests
 
-@csrf_exempt
-def barcode(request):
-    answer = ((request.body).decode('utf-8'))
-    return_json_str=json.loads(answer)
-    return_str=return_json_str['action']['name']
-    return_str_git=return_json_str['action']['detailParams']['barcode']['value']
-    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
-    return_str_alias={'alias':'첫번째 레포다'}
-    data={  'fav_repository':return_str_git,
-            'nick_name':return_str_alias,
-            'id':return_str_id
-    }
-    #return_str_alias=return_json_str['action']['detailParams']['barcode']['value']
-
-    if return_str == '바코드':
-        res=request.UserView.post("http://margarets.pythonanywhere.com/api/", data=data)
-        print(res.status_code)
-        print(return_str_git)
-        print(return_str_id)
-        print(return_str_alias)
-        return JsonResponse({
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': "qr코드 전송이 완료되었습니다."
-                    }
-                }],
-            }
-        })
-
 class UserView(APIView):
     def post(self, request):
         id = request.POST.get('id','')
@@ -81,3 +50,34 @@ class UserView(APIView):
         finally:
             if conn != None:
                 conn.close()
+
+@csrf_exempt
+def barcode(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str=return_json_str['action']['name']
+    return_str_git=return_json_str['action']['detailParams']['barcode']['value']
+    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+    return_str_alias={'alias':'첫번째 레포다'}
+    data={  'fav_repository':return_str_git,
+            'nick_name':return_str_alias,
+            'id':return_str_id
+    }
+    #return_str_alias=return_json_str['action']['detailParams']['barcode']['value']
+
+    if return_str == '바코드':
+        res=request.UserView.post("http://margarets.pythonanywhere.com/api/", data=data)
+        print(res.status_code)
+        print(return_str_git)
+        print(return_str_id)
+        print(return_str_alias)
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': "qr코드 전송이 완료되었습니다."
+                    }
+                }],
+            }
+        })
