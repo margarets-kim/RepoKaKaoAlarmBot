@@ -22,7 +22,7 @@ def barcode(request):
     #return_str_alias=return_json_str['action']['detailParams']['barcode']['value']
 
     if return_str == '바코드':
-        res=request.post("http://margarets.pythonanywhere.com/api/", data=data)
+        res=request.UserView.post("http://margarets.pythonanywhere.com/api/", data=data)
         print(res.status_code)
         print(return_str_git)
         print(return_str_id)
