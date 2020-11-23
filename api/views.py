@@ -112,7 +112,7 @@ def barcode(request):
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': "qr코드 전송이 완료되었습니다."
+                        'text': f"{return_str_alias} 등록 완료!"
                     }
                 }],
             }
