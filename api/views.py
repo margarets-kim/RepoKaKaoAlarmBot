@@ -36,6 +36,26 @@ def message(request):
             }
         })
 
+@csrf_exempt
+def barcode(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str=return_json_str['action']['name']
+    return_str_git=return_json_str['action']['detailParams']['value']
+
+    if return_str == 'QR코드 값 전송':
+        print(return_str_git)
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': "qr코드 전송이 완료되었습니다."
+                    }
+                }],
+            }
+        })
+
 class UserView(APIView):
     def post(self, request):
         id = request.POST.get('id','')
