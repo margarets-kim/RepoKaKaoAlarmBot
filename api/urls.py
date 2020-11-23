@@ -6,5 +6,5 @@ app_name = 'api'
 urlpatterns = [
     path('', views.UserView.as_view()),
     path('keyboard/', views.keyboard),
-    path('message/', views.message),
+    path('message', views.message),
 ]
