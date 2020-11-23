@@ -6,45 +6,21 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-def keyboard(request):
-    content={
-        'type':'buttons',
-        'buttons':['hi','zz','dd'],
-    }
-    return JsonResponse(content)
-
-@csrf_exempt
-def message(request):
-    answer = ((request.body).decode('utf-8'))
-    return_json_str=json.loads(answer)
-    return_str=return_json_str['userRequest']['utterance']
-
-    if return_str == '테스트':
-        return JsonResponse({
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': "테스트 성공입니다."
-                    }
-                }],
-                'quickReplies': [{
-                    'label': '처음으로',
-                    'action': 'message',
-                    'messageText': '처음으로'
-                }]
-            }
-        })
-
 @csrf_exempt
 def barcode(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
     return_str=return_json_str['action']['name']
     return_str_git=return_json_str['action']['detailParams']['barcode']['value']
+    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+    return_str_alias={'alias':'첫번째 레포다'}
+    #data={'fav_repository':return_str_git.}
+    #return_str_alias=return_json_str['action']['detailParams']['barcode']['value']
 
     if return_str == '바코드':
         print(return_str_git)
+        print(return_str_id)
+        print(return_str_alias)
         return JsonResponse({
             'version': "2.0",
             'template': {
