@@ -6,6 +6,13 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+def keyboard(request):
+    content={
+        'type':'buttons',
+        'buttons':['hi','zz','dd'],
+    }
+    return JsonResponse(content)
+
 @csrf_exempt
 def message(request):
     answer = ((reqeust.body).decode('utf-8'))

@@ -5,5 +5,6 @@ from django.conf.urls import include
 app_name = 'api'
 urlpatterns = [
     path('', views.UserView.as_view()),
-    path('message', views.message),
+    path('keyboard/', views.keyboard),
+    path('message/', views.message),
 ]
