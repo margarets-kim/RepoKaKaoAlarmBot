@@ -41,7 +41,7 @@ def barcode(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
     return_str=return_json_str['action']['name']
-    return_str_git=return_json_str['action']['detailParams']['barcode']['value']
+    return_str_git=return_json_str['action']['detailParams']['barcode']['value']['barcodeData']
 
     if return_str == '바코드':
         print(return_str_git)
