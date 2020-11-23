@@ -43,10 +43,6 @@ INSTALLED_APPS = [
     'page'
 ]
 
-REST_FRAMEWORK = [
-    'DEFALUT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',)
-]
-
 CRONJOBS = [
     ('*/1 * * * *', 'RepoKaKaoAlarm.cron.batch', '>> /path/to/log/file.log'),
 ]
