@@ -15,7 +15,7 @@ def barcode(request):
     return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
     return_str_alias={'alias':'첫번째 레포다'}
     data={  'fav_repository':return_str_git,
-            'nick_name':return_str_alias.alias,
+            'nick_name':return_str_alias,
             'id':return_str_id
     }
     #return_str_alias=return_json_str['action']['detailParams']['barcode']['value']
