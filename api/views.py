@@ -103,12 +103,14 @@ def barcode(request):
     return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
     return_str_alias="첫번째 레포다"
     #return_str_alias=return_json_str['action']['detailParams']['barcode']['value']
+    test=json.loads(return_str_git)
 
     if return_str == '바코드':
         #test(return_str_id,return_str_git['barcodeData'],return_str_alias)
-        print(return_str_git['barcodeData'])
+        #print(return_str_git['barcodeData'])
         #print(return_str_id)
         #print(return_str_alias)
+        print(test)
         return JsonResponse({
             'version': "2.0",
             'template': {
