@@ -112,7 +112,7 @@ def barcode(request):
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': f"{return_str_alias} 등록 완료!"
+                        'text': f"[{return_str_alias}] 등록 완료!"
                     }
                 }],
             }
