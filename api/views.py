@@ -6,13 +6,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json, requests
 
-if(barcode_check==1):
-    print(0)
-    requests.post('http://margarets.pythonanywhere.com/api/', data=data)
-    print(1)
-    barcode_check=0
-    print(2)
-
 class UserView(APIView):
     def post(self, request):
         id = request.POST.get('id','')
@@ -57,11 +50,6 @@ class UserView(APIView):
             if conn != None:
                 conn.close()
 
-barcode_check=0
-print(f"바코드 체크 {barcode_check}")
-data={'fav_repository':'없음','nick_name':'없음','id':'없음'}
-print(10)
-
 @csrf_exempt
 def barcode(request):
     answer = ((request.body).decode('utf-8'))
@@ -72,10 +60,11 @@ def barcode(request):
     return_str_alias="첫번째 레포다"
     return_str_git_barcodeData=json.loads(return_str_git)
 
-    barcode_check=1
-    print(f"바코드 체크 2{barcode_check}")
+
+    data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
 
     if return_str == '바코드':
+        devData(data)
         return JsonResponse({
             'version': "2.0",
             'template': {
@@ -87,4 +76,7 @@ def barcode(request):
             }
         })
 
-print(f"바코드 체크 3{barcode_check}")
+def devData(data):
+    print(1)
+    requests.post('http://margarets.pythonanywhere.com/api/', data=data)
+    print(2)
