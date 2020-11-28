@@ -52,7 +52,7 @@ class UserView(APIView):
 
 @csrf_exempt
 def barcode(request):
-    url='http://margarets.pythonanywhere.com/api'
+    url='http://margarets.pythonanywhere.com/api/'
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
     return_str=return_json_str['action']['name']
