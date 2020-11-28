@@ -112,14 +112,12 @@ class GetInfo (APIView) :
             print(i)
             branch_lists.append(jsonObject_branches[i-1].get("name"))
 
-        res_json = {
-            "avatar_url : " + avatar_url, 
-            "name : " + name, 
-            "created_at : " + created_at, 
-            "updated_at : " + updated_at, 
-            "stargazers_count : " + str(stargazers_count), 
-            "forks : " + str(forks),
-            "branch_lists : " + str(branch_lists)
-            }
-
-        return JsonResponse(res_json, status = 200)    
+        return JsonResponse({
+            "avatar_url" : avatar_url, 
+            "name" : name, 
+            "created_at" : created_at, 
+            "updated_at" : updated_at, 
+            "stargazers_count" : stargazers_count, 
+            "forks" : forks,
+            "branch_lists" : branch_lists
+            }, status = 200)    
