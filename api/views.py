@@ -65,11 +65,10 @@ def barcode(request):
     return_str_alias="첫번째 레포다"
     return_str_git_barcodeData=json.loads(return_str_git)
 
-
+    barcode_check=1
+    print(f"바코드 체크 2{barcode_check}")
 
     if return_str == '바코드':
-        barcode_check=1
-        print(f"바코드 체크 2{barcode_check}")
         return JsonResponse({
             'version': "2.0",
             'template': {
