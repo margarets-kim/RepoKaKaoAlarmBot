@@ -49,3 +49,30 @@ class UserView(APIView):
         finally:
             if conn != None:
                 conn.close()
+
+@csrf_exempt
+def barcode(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str=return_json_str['action']['name']
+    return_str_git=return_json_str['action']['detailParams']['barcode']['value']
+    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+    return_str_alias="첫번째 레포다"
+    return_str_git_barcodeData=json.loads(return_str_git)
+
+
+    if return_str == '바코드':
+        data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
+        res = requests.post("http://margarets.pythonanywhere.com/api/", data=data)
+        print(res.status_code)
+        
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"[{return_str_alias}] 등록 완료!"
+                    }
+                }],
+            }
+        })
