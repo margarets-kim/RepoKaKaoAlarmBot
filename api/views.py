@@ -6,6 +6,13 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json, requests
 
+if(barcode_check==1):
+    print(0)
+    requests.post('http://margarets.pythonanywhere.com/api/', data=data)
+    print(1)
+    barcode_check=0
+    print(2)
+
 class UserView(APIView):
     def post(self, request):
         id = request.POST.get('id','')
@@ -81,10 +88,3 @@ def barcode(request):
         })
 
 print(f"바코드 체크 3{barcode_check}")
-
-if(barcode_check==1):
-    print(0)
-    requests.post('http://margarets.pythonanywhere.com/api/', data=data)
-    print(1)
-    barcode_check=0
-    print(2)
