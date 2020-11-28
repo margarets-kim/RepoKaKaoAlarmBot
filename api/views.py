@@ -81,6 +81,8 @@ def barcode(request):
             }
         })
 
+print(f"바코드 체크 3{barcode_check}")
+
 if(barcode_check==1):
     print(0)
     requests.post('http://margarets.pythonanywhere.com/api/', data=data)
