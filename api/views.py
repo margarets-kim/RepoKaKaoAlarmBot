@@ -65,7 +65,7 @@ def barcode(request):
     if return_str == '바코드':
 
         data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
-        res = requests.post("http://margarets.pythonanywhere.com/api/", data=data)
+        res = requests.post("http://margarets.pythonanywhere.com/api/", data=json.dumps(data))
         print(f"error code: {res.status_code}")
 
         return JsonResponse({
