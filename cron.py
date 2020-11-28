@@ -1,11 +1,12 @@
-import MySQLdb,threading
+import MySQLdb,threading,time
 from api.githubApi import getRepositoryInfo
 
 def batch():
     print("깃 허브쪽 배치 프로그램이 돌고 있습니다.")  # 배치 프로그램이 돌고 있다는 로그남김 log
     try:
         conn = None
-        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        #conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
         curs = conn.cursor()
 
         sql = "SELECT GIT_API_ADDRESS,FAV_REPOSITORY,GIT_UPDATED_AT FROM repository;"
@@ -17,19 +18,23 @@ def batch():
         time = curs.fetchall()
 
         for i in result:
-            dataList = getRepositoryInfo(i[0], 1)
+            dataList = getRepositoryInfo(i[0], None , 1)
             if dataList[0] == 404:
                 raise Exception('GITHUB API 호출할때 문제가 생겼습니다.')
             if dataList[1] != i[2]:  # dataList[1]은 깃 업데이트날, i[2]은 db상 저장된 깃 업데이트날
                 sql = "UPDATE repository SET GIT_UPDATED_AT=%s,UPDATED_AT=%s WHERE FAV_REPOSITORY = %s"
                 curs.execute(sql, (dataList[1], time, i[1]))
 
-                sql = "SELECT b.id,b.nick_name FROM repository a LEFT JOIN user b ON a.fav_repository = b.fav_repository WHERE a.fav_repository=%s";
+                sql = "SELECT b.id,b.nick_name,b.type FROM repository a LEFT JOIN user b ON a.fav_repository = b.fav_repository WHERE a.fav_repository=%s";
                 curs.execute(sql, [i[1]])
 
                 result = curs.fetchall()
                 for j in result:
-                    print(j[0], j[1])
+                    if j[0] == 'kakao' :
+                        print("카카오를 할 것")
+                    else : # 나머지 케이스는 텔레그램
+                        print("test")
+                    #https://api.github.com/repos/brownhci/WebGazer/commits?sha=dev&since=2016-05-23T19:28:51Z
 
         conn.commit()
     except Exception as e:
@@ -37,5 +42,6 @@ def batch():
     finally:
         if conn != None:
             conn.close()
-        threading.Timer(3600,batch()).start()
-batch()
+
+while True:    # while에 True를 지정하면 무한 루프
+    batch()
