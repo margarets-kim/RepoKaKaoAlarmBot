@@ -2,8 +2,7 @@ from django.urls import path
 from . import views
 from django.conf.urls import include
 
-app_name = 'api'
+app_name = 'page'
 urlpatterns = [
-    #path('', views.UserView.as_view()),
-    path('barcode/', views.barcode),
+    path('', views.KakaoInfo.as_view()),
 ]
