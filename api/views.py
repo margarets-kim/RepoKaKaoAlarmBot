@@ -82,11 +82,10 @@ def devData(data):
     print(2)
 
 class GetInfo (APIView) : 
-    def get (self, request) :
-        fav_repository = request.Get.get('fav_repository', '')
+    def post (self, request) :
+        fav_repository = request.Post.get('fav_repository', '')
 
         branch_lists = []
-        res_json = {}
 
         index = fav_repository.find('github')
         url = fav_repository[index:]
