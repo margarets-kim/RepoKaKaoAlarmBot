@@ -57,9 +57,11 @@ def barcode(request):
     return_str=return_json_str['action']['name']
     return_str_git=return_json_str['action']['detailParams']['barcode']['value']
     return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
-    return_str_alias="첫번째 레포다"
+    return_str_alias="test 레포"
     return_str_git_barcodeData=json.loads(return_str_git)
 
+    data={'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
+    devData(data)
 
     data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
     devData(data)
@@ -78,45 +80,6 @@ def barcode(request):
 
 def devData(data):
     print(1)
-    requests.post('http://margarets.pythonanywhere.com/api/', data=data)
+    res=requests.post('http://margarets.pythonanywhere.com/api/', data=data)
     print(2)
-
-class GetInfo (APIView) : 
-    def post (self, request) :
-        fav_repository = request.Post.get('fav_repository', '')
-
-        branch_lists = []
-
-        index = fav_repository.find('github')
-        url = fav_repository[index:]
-        index = url.find("/")
-        url_repos = "https://api.github.com/repos"+url[index:]
-        url_branches = "https://api.github.com/repos"+url[index:]+"/branches"
-
-        content_repos = requests.get(url_repos, headers={'Authorization': 'token 2a19d3dda9e148fd04518bb6d9a61fb8bed6899f'})
-        jsonObject_repos = json.loads(content_repos.content)
-
-        avatar_url = jsonObject_repos.get("owner").get("avatar_url")
-        name = jsonObject_repos.get("name")
-        created_at = jsonObject_repos.get("created_at")
-        updated_at = jsonObject_repos.get("updated_at")
-        stargazers_count = jsonObject_repos.get("stargazers_count")
-        forks = jsonObject_repos.get("forks")
-
-        content_branches = requests.get(url_branches, headers={'Authorization': 'token 2a19d3dda9e148fd04518bb6d9a61fb8bed6899f'})
-        jsonObject_branches = json.loads(content_branches.content)
-        json_size = len(jsonObject_branches)
-
-        for i in range(1, int(json_size)+1):
-            print(i)
-            branch_lists.append(jsonObject_branches[i-1].get("name"))
-
-        return JsonResponse({
-            "avatar_url" : avatar_url, 
-            "name" : name, 
-            "created_at" : created_at, 
-            "updated_at" : updated_at, 
-            "stargazers_count" : stargazers_count, 
-            "forks" : forks,
-            "branch_lists" : branch_lists
-            }, status = 200)    
+    print(f"error code: {res.status_code}")
