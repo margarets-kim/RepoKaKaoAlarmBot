@@ -54,6 +54,7 @@ def batch():
 
 def telegram(id,nick_name,fav_repository,json) :
     print(json)
+    #json에서 tree->url 객체를 얻어낸 후 그거 그대로 api 호출 시 tree가 나오는데 그 정보 이용하면 됨.
 
 while True:    # while에 True를 지정하면 무한 루프
     batch()

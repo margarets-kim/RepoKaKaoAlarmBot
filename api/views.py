@@ -57,29 +57,76 @@ class UserView(APIView):
             if conn != None:
                 conn.close()
 
-class ShowBarcode(APIView):
-    def barcode(self, request):
-        answer = ((request.body).decode('utf-8'))
-        return_json_str=json.loads(answer)
-        return_str=return_json_str['action']['name']
-        return_str_git=return_json_str['action']['detailParams']['barcode']['value']
-        return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
-        return_str_alias="첫번째 레포다"
-        return_str_git_barcodeData=json.loads(return_str_git)
+@csrf_exempt
+def barcode(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str=return_json_str['action']['name']
+    return_str_git=return_json_str['action']['detailParams']['barcode']['value']
+    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+    return_str_alias="첫번째 레포다"
+    return_str_git_barcodeData=json.loads(return_str_git)
 
 
-        data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
+    data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
+    devData(data)
 
-        if return_str == '바코드':
-            res = requests.post('http://margarets.pythonanywhere.com/api/', data=data)
-            print(res)
-            return JsonResponse({
-                'version': "2.0",
-                'template': {
-                    'outputs': [{
-                        'simpleText': {
-                            'text': f"[{return_str_alias}] 등록 완료!"
-                        }
-                    }],
-                }
-            })
+    if return_str == '바코드':
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"[{return_str_alias}] 등록 완료!"
+                    }
+                }],
+            }
+        })
+
+def devData(data):
+    print(1)
+    requests.post('http://margarets.pythonanywhere.com/api/', data=data)
+    print(2)
+
+class GetInfo (APIView) :
+    def get (self, request) :
+        fav_repository = request.Get.get('fav_repository', '')
+
+        branch_lists = []
+        res_json = {}
+
+        index = fav_repository.find('github')
+        url = fav_repository[index:]
+        index = url.find("/")
+        url_repos = "https://api.github.com/repos"+url[index:]
+        url_branches = "https://api.github.com/repos"+url[index:]+"/branches"
+
+        content_repos = requests.get(url_repos, headers={'Authorization': 'token 2a19d3dda9e148fd04518bb6d9a61fb8bed6899f'})
+        jsonObject_repos = json.loads(content_repos.content)
+
+        avatar_url = jsonObject_repos.get("owner").get("avatar_url")
+        name = jsonObject_repos.get("name")
+        created_at = jsonObject_repos.get("created_at")
+        updated_at = jsonObject_repos.get("updated_at")
+        stargazers_count = jsonObject_repos.get("stargazers_count")
+        forks = jsonObject_repos.get("forks")
+
+        content_branches = requests.get(url_branches, headers={'Authorization': 'token 2a19d3dda9e148fd04518bb6d9a61fb8bed6899f'})
+        jsonObject_branches = json.loads(content_branches.content)
+        json_size = len(jsonObject_branches)
+
+        for i in range(1, int(json_size)+1):
+            print(i)
+            branch_lists.append(jsonObject_branches[i-1].get("name"))
+
+        res_json = {
+            "avatar_url : " + avatar_url,
+            "name : " + name,
+            "created_at : " + created_at,
+            "updated_at : " + updated_at,
+            "stargazers_count : " + str(stargazers_count),
+            "forks : " + str(forks),
+            "branch_lists : " + str(branch_lists)
+            }
+
+        return JsonResponse(res_json, status = 200)
