@@ -5,6 +5,7 @@ from . import githubApi
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+import requests
 
 class UserView(APIView):
     def post(self, request):
@@ -62,8 +63,9 @@ def barcode(request):
 
 
     if return_str == '바코드':
-        data={'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
-        res=requests.post("http://margarets.pythonanywhere.com/api/", data=data)
+
+        data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
+        res = requests.post("http://margarets.pythonanywhere.com/api/", data=data)
         print(f"error code: {res.status_code}")
 
         return JsonResponse({
