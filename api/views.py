@@ -52,6 +52,7 @@ class UserView(APIView):
 
 barcode_check=0
 data={'fav_repository':'없음','nick_name':'없음','id':'없음'}
+print(10)
 
 @csrf_exempt
 def barcode(request):
@@ -79,5 +80,8 @@ def barcode(request):
         })
 
 if(barcode_check==1):
+    print(0)
     requests.post('http://margarets.pythonanywhere.com/api/', data=data)
+    print(1)
     barcode_check=0
+    print(2)
