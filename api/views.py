@@ -74,7 +74,8 @@ def barcode(request):
                     }
                 }],
             }
-        })
+        },
+        status = 200)
 
 def devData(data):
     print(1)
