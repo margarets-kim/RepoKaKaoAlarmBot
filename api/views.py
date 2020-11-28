@@ -51,6 +51,7 @@ class UserView(APIView):
                 conn.close()
 
 barcode_check=0
+print(f"바코드 체크 {barcode_check}")
 data={'fav_repository':'없음','nick_name':'없음','id':'없음'}
 print(10)
 
@@ -68,6 +69,7 @@ def barcode(request):
 
     if return_str == '바코드':
         barcode_check=1
+        print(f"바코드 체크 2{barcode_check}")
         return JsonResponse({
             'version': "2.0",
             'template': {
