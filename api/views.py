@@ -63,7 +63,8 @@ def barcode(request):
 
     print(1)
 
-    data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
+    #data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
+    data = {'fav_repository':'https://github.com/Margarets00/playus_project','nick_name':'제발','id':'123456'}
     print(2)
     res = requests.post(url, data=data)
     print(3)
