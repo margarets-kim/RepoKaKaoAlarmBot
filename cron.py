@@ -1,4 +1,4 @@
-import MySQLdb,threading,time
+import MySQLdb,threading,time,requests,json
 from api.githubApi import getRepositoryInfo
 from datetime import datetime, timedelta
 
@@ -26,7 +26,7 @@ def batch():
                 sql = "UPDATE repository SET GIT_UPDATED_AT=%s,UPDATED_AT=%s WHERE FAV_REPOSITORY = %s"
                 curs.execute(sql, (dataList[1], time, i[1]))
 
-                sql = "SELECT b.id,b.nick_name,b.type,a.git_api_address FROM repository a LEFT JOIN user b ON a.fav_repository = b.fav_repository WHERE a.fav_repository=%s";
+                sql = "SELECT b.id,b.nick_name,b.type,a.git_api_address,a.fav_repository FROM repository a LEFT JOIN user b ON a.fav_repository = b.fav_repository WHERE a.fav_repository=%s";
                 curs.execute(sql, [i[1]])
 
                 result = curs.fetchall()
@@ -41,7 +41,10 @@ def batch():
                         print("카카오를 할 것")
                     else : # 나머지 케이스는 텔레그램
                         date = datetime.strptime(dataList[1], '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+1)
-                        print(date)
+                        timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
+                        content = requests.get(url,headers={'Authorization':'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'},params={'sha':branch,'since':timestampStr})
+                        jsonObject = json.loads(content.content)
+                        telegram(j[0],j[1],j[4],jsonObject) # 이 부분 수정 필요
         conn.commit()
     except Exception as e:
         raise Exception('GITHUB API 호출할때 문제가 생겼습니다.')
@@ -49,8 +52,8 @@ def batch():
         if conn != None:
             conn.close()
 
-def telegram(id,nick_name,json) :
-    print(id)
+def telegram(id,nick_name,fav_repository,json) :
+    print(json)
 
 while True:    # while에 True를 지정하면 무한 루프
     batch()
