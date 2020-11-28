@@ -77,8 +77,4 @@ def barcode(request):
                 }],
             }
         })
-
-if(barcode_check){
-    requests.post('http://margarets.pythonanywhere.com/api/', data=data)
-    barcode_check=0
-}
+        
