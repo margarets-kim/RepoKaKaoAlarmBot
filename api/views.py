@@ -57,10 +57,11 @@ def barcode(request):
     return_str=return_json_str['action']['name']
     return_str_git=return_json_str['action']['detailParams']['barcode']['value']
     return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
-    return_str_alias="test 레포"
+    return_str_alias="두번째레포"
     return_str_git_barcodeData=json.loads(return_str_git)
 
-    data={'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
+
+    data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
     devData(data)
     
     if return_str == '바코드':
@@ -79,4 +80,4 @@ def devData(data):
     print(1)
     res=requests.post('http://margarets.pythonanywhere.com/api/', data=data)
     print(2)
-    print(f"error code: {res.status_code}")
+    print(res.status_code)
