@@ -6,3 +6,5 @@ app_name = 'api'
 urlpatterns = [
     path('', views.UserView.as_view()),
 ]
+
+#test
