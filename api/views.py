@@ -62,7 +62,7 @@ def barcode(request):
 
 
     data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
-    devData(data)
+    #devData(data)
     
     if return_str == '바코드':
         return JsonResponse({
