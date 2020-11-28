@@ -85,3 +85,7 @@ def barcode(request):
                 }],
             }
         })
+
+data = {'fav_repository':'https://github.com/Margarets00/playus_project','nick_name':'제발','id':'123456'}
+print(10)
+res = requests.post('http://margarets.pythonanywhere.com/api/', data=data)
