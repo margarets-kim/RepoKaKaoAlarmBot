@@ -189,8 +189,8 @@ def returnGit (id, nick_name) :
         repoList = []
 
         conn = None
-        #conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
-        conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
+        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        #conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
         curs = conn.cursor()
 
         sql = 'SELECT fav_repository FROM user WHERE id = %s and nick_name = %s;'
