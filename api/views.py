@@ -50,7 +50,7 @@ class UserView(APIView):
             if conn != None:
                 conn.close()
 
-""" @csrf_exempt
+@csrf_exempt
 def barcode(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
@@ -74,82 +74,48 @@ def barcode(request):
                     }
                 }],
             }
-        }) """
-
-@csrf_exempt
-def repoList(request):
-    answer = ((request.body).decode('utf-8'))
-    return_json_str=json.loads(answer)
-    return_str_skill=return_json_str['action']['name']
-
-    repoList_arr=['첫번째','두번째','세번째','네번째']
-    return_str_repoList="등록하신 레포 목록입니다.\n"
-
-    for i in range(0,len(repoList_arr),1):
-        return_str_repoList=return_str_repoList+str(i+1)+". "+repoList_arr[i]
-        if(i<len(repoList_arr)-1):
-            return_str_repoList+="\n"
-
-    if return_str_skill == '레포리스트':
-        return JsonResponse({
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': f"{return_str_repoList}"
-                    }
-                }],
-                'quickReplies':[{
-                    'label': '입력하기',
-                    'action': 'message',
-                }]
-            }
         })
-
-@csrf_exempt
-def repoStatus(request):
-    answer = ((request.body).decode('utf-8'))
-    return_json_str=json.loads(answer)
-    return_str_skill=return_json_str['action']['name']
-
-    return_str_repoAlias=return_json_str['action']['detailParams']['repoAlias']['value']
-
-    if return_str_skill == '레포상태':
-        return JsonResponse({
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': f"{return_str_repoAlias}"
-                    }
-                }],
-            }
-        })
-
-""" @csrf_exempt
-def blockId(request):
-    answer = ((request.body).decode('utf-8'))
-    return_json_str=json.loads(answer)
-    return_str_skill=return_json_str['action']['name']
-
-    return_str_block_id=return_json_str['userRequest']['block']['id']
-
-
-    if return_str_skill == '블록ID':
-        return JsonResponse({
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': f"{return_str_block_id}"
-                    }
-                }],
-            }
-        }) """
-
-""" def devData(data):
+def devData(data):
     print(1)
     res=requests.post('http://margarets.pythonanywhere.com/api/', data=data)
     print(2)
     print(res.status_code)
- """
+
+class GetInfo (APIView) : 
+    def get (self, request) :
+        fav_repository = request.get.get('fav_repository', '')
+
+        branch_lists = []
+
+        index = fav_repository.find('github')
+        url = fav_repository[index:]
+        index = url.find("/")
+        url_repos = "https://api.github.com/repos"+url[index:]
+        url_branches = "https://api.github.com/repos"+url[index:]+"/branches"
+
+        content_repos = requests.get(url_repos, headers={'Authorization': 'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'})
+        jsonObject_repos = json.loads(content_repos.content)
+
+        avatar_url = jsonObject_repos.get("owner").get("avatar_url")
+        name = jsonObject_repos.get("name")
+        created_at = jsonObject_repos.get("created_at")
+        updated_at = jsonObject_repos.get("updated_at")
+        stargazers_count = jsonObject_repos.get("stargazers_count")
+        forks = jsonObject_repos.get("forks")
+
+        content_branches = requests.get(url_branches, headers={'Authorization': 'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'})
+        jsonObject_branches = json.loads(content_branches.content)
+        json_size = len(jsonObject_branches)
+
+        for i in range(1, int(json_size)+1):
+            branch_lists.append(jsonObject_branches[i-1].get("name"))
+
+        return Response({
+            "avatar_url" : avatar_url, 
+            "name" : name, 
+            "created_at" : created_at, 
+            "updated_at" : updated_at, 
+            "stargazers_count" : stargazers_count, 
+            "forks" : forks,
+            "branch_lists" : branch_lists
+            }, status = 200)        
