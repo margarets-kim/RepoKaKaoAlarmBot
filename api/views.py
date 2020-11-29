@@ -84,8 +84,8 @@ def devData(data):
 class GetRepoInfo (APIView) :
     def get (self, request) :
         try :
-            fav_repository = request.query_params.get('fav_repository', None)
-
+            #fav_repository = request.query_params.get('fav_repository', None)
+            fav_repository = 'https://github.com/Margarets00/playus_project'
             branch_lists = []
 
             index = fav_repository.find('github')
