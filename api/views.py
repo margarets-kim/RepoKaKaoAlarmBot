@@ -77,7 +77,7 @@ def barcode(request):
         }) """
 
 @csrf_exempt
-def repo(request):
+def repoList(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
     return_str_skill=return_json_str['action']['name']
@@ -86,7 +86,7 @@ def repo(request):
     return_str_repoList="등록하신 레포 목록입니다.\n"
 
     for i in range(0,len(repoList_arr),1):
-        return_str_repoList+=repoList_arr[0]
+        return_str_repoList+=repoList_arr[i]
         if(i<len(repoList_arr)-1):
             return_str_repoList+="\n"
 
@@ -96,7 +96,55 @@ def repo(request):
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': f"{return_str_repoList}"
+                        'text': f"{return_str_repoList}\n 위에서 한가지를 입력해주세요"
+                    }
+                }],
+                'quickReplies':[{
+                    'label': '입력하기',
+                    'action':'block',
+                    'blockId':'레포상태'
+                    'messageText':'입력하기',
+                }]
+            }
+        })
+
+@csrf_exempt
+def repoStatus(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str_skill=return_json_str['action']['name']
+
+
+    if return_str_skill == '레포상태':
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"{return_str_repoList}\n 위에서 한가지를 입력해주세요"
+                        'action':''
+                    }
+                }],
+            }
+        })
+
+@csrf_exempt
+def blockId(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str_skill=return_json_str['action']['name']
+
+    return_str_block_id=return_json_str['userRequest']['block']['id']
+
+
+    if return_str_skill == '블록ID':
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"{return_str_block_id}"
+                        'action':''
                     }
                 }],
             }

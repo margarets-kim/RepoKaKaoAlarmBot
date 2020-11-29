@@ -6,5 +6,7 @@ app_name = 'api'
 urlpatterns = [
     path('', views.UserView.as_view()),
     #path('barcode/', views.barcode),
-    path('repo/', views.repo),
+    path('repoList/', views.repoList),
+    path('repoStatus/', views.repoStatus),
+    path('blockId/', views.blockId),
 ]
