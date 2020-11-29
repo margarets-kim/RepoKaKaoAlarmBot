@@ -317,26 +317,26 @@ def repoList(request):
 @csrf_exempt
 def repoStatus(request):
     answer = ((request.body).decode('utf-8'))
-    return_json_str=json.loads(answer)
-    return_str_skill=return_json_str['action']['name']
-    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
-    repoList_arr=sendList(return_str_id)
+    return_json_str = json.loads(answer)
+    return_str_skill = return_json_str['action']['name']
+    return_str_id = return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+    repoList_arr = sendList(return_str_id)
     
-    return_str_repoAlias=int(return_json_str['action']['detailParams']['repoAlias']['value'])
+    return_str_repoAlias = int(return_json_str['action']['detailParams']['repoAlias']['value'])
     return_str_git_url, return_str_git_branch = returnGit(return_str_id,repoList_arr[return_str_repoAlias-1])
 
     res=batch(return_str_id, return_str_git_url, repoList_arr[return_str_repoAlias-1], 'kakao', return_str_git_branch)
 
-    return_str_text=f"[{repoList_arr[return_str_repoAlias-1]}] 최근 커밋 이력입니다.\n"
-    return_str_text="날짜 : "+return_str_text+res[0].get("commit").get("author").get("date")+"\n"
-    return_str_text="이름 : "+return_str_text+res[0].get("commit").get("author").get("name")+"\n"
-    return_str_text="이메일 : "+return_str_text+res[0].get("commit").get("author").get("email")+"\n"
-    return_str_text="커밋메세지 : "+return_str_text+res[0].get("commit").get("message")+"\n"
-    return_str_text="주소 : "+return_str_text+res[0].get("html_url")
+    return_str_text = f"[{repoList_arr[return_str_repoAlias-1]}] 최근 커밋 이력입니다.\n"
+    return_str_text = return_str_text + "날짜 : " + res[0].get("commit").get("author").get("date") + "\n"
+    return_str_text = return_str_text + "이름 : " + res[0].get("commit").get("author").get("name") + "\n"
+    return_str_text = return_str_text + "이메일 : " + res[0].get("commit").get("author").get("email") + "\n"
+    return_str_text = return_str_text + "커밋메세지 : " + res[0].get("commit").get("message") + "\n"
+    return_str_text = return_str_text + "주소 : " + res[0].get("html_url")
 
 
-    if res=="None":
-        res="해당 레포 업데이트 사항이 없습니다"
+    if res == "None":
+        res = "해당 레포 업데이트 사항이 없습니다"
 
     if return_str_skill == '레포상태':
         return JsonResponse({
