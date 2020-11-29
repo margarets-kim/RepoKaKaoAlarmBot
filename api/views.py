@@ -196,14 +196,13 @@ def returnGit (id, nick_name) :
         sql = 'SELECT fav_repository FROM user WHERE id = %s and nick_name = %s;'
         curs.execute(sql, (id, nick_name))
         result = curs.fetchall()
+        print(result)
 
-        """ for i in result :
+        for i in result :
             index = i[0].find('branches')-1
             repo_url = i[0][:index]
             index = i[0].rfind('/')+1
-            repo_branch = i[0][index:] """
-        repo_url='https://github.com/Yubbini/test'
-        repo_branch='main'
+            repo_branch = i[0][index:]
 
         
         return repo_url, repo_branch
