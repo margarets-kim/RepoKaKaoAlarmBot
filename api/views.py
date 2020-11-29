@@ -108,7 +108,7 @@ def repoList(request):
             }
         })
 
-@csrf_exempt
+""" @csrf_exempt
 def repoStatus(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
@@ -122,11 +122,10 @@ def repoStatus(request):
                 'outputs': [{
                     'simpleText': {
                         'text': f"{return_str_repoList}\n 위에서 한가지를 입력해주세요"
-                        'action':''
                     }
                 }],
             }
-        })
+        }) """
 
 @csrf_exempt
 def blockId(request):
@@ -144,7 +143,6 @@ def blockId(request):
                 'outputs': [{
                     'simpleText': {
                         'text': f"{return_str_block_id}"
-                        'action':''
                     }
                 }],
             }
