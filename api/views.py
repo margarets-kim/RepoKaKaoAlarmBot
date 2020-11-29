@@ -82,8 +82,10 @@ def devData(data):
     print(res.status_code) """
 
 class GetRepoInfo (APIView) :
-    def get (self, request, fav_repository) :
+    def get (self, request) :
         try :
+            fav_repository = request.query_params.get('fav_repository', None)
+
             branch_lists = []
 
             index = fav_repository.find('github')
