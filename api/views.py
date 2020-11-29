@@ -120,7 +120,7 @@ def repoStatus(request):
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': f"{return_str_user}"
+                        'text': f"{return_str_repoAlias}"
                     }
                 }],
             }
