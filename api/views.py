@@ -199,10 +199,11 @@ def returnGit (id, nick_name) :
 
         for i in result :
             index = i[0].find('branches')-1
-            repoList.append(i[0][:index])
+            repo_url = i[0][:index]
             index = i[0].rfind('/')+1
-            repoList.append(i[0][index:])
-        return repoList
+            repo_branch = i[0][index:]
+        
+        return repo_url, repo_branch
 
     except Exception as e :
         return print(str(e))
@@ -264,11 +265,6 @@ def barcode(request):
     return_str_alias="두번째레포"
     return_str_git_barcodeData=json.loads(return_str_git)
     return_str_branch="main"
-
-    print(return_str_id)
-    print(return_str_git_barcodeData.get("barcodeData"))
-    print(return_str_alias)
-    print(return_str_branch)
 
     insertDb(return_str_id, return_str_git_barcodeData.get("barcodeData"), "kakao", return_str_alias, return_str_branch)
     
