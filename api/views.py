@@ -322,7 +322,7 @@ def repoStatus(request):
 
     res=batch(return_str_id, return_str_git_url, repoList_arr[return_str_repoAlias-1], 'kakao', return_str_git_branch)
     return_res=json.loads(res)
-    print(res)
+    print(return_res)
 
     if return_str_skill == '레포상태':
         return JsonResponse({
@@ -330,7 +330,7 @@ def repoStatus(request):
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': res
+                        'text': f"{return_res}"
                     }
                 }],
             }
