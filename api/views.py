@@ -102,7 +102,6 @@ def repoList(request):
                 'quickReplies':[{
                     'label': '입력하기',
                     'action': 'message',
-                    'messageText':'입력하기',
                 }]
             }
         })
