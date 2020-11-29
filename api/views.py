@@ -326,7 +326,6 @@ def repoStatus(request):
     return_str_git_url, return_str_git_branch = returnGit(return_str_id,repoList_arr[return_str_repoAlias-1])
 
     res=batch(return_str_id, return_str_git_url, repoList_arr[return_str_repoAlias-1], 'kakao', return_str_git_branch)
-    print(res[0].get("commit").get("author").get("name"))
 
     return_str_text=f"[{repoList_arr[return_str_repoAlias-1]}] 최근 커밋 이력입니다.\n"
     return_str_text="날짜 : "+return_str_text+res[0].get("commit").get("author").get("date")+"\n"
@@ -345,7 +344,7 @@ def repoStatus(request):
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': f"{res}"
+                        'text': f"{return_str_text}"
                     }
                 }],
             }
