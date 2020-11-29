@@ -209,7 +209,7 @@ class GetRepoList(APIView) :
             #conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
             curs = conn.cursor()
 
-            sql = 'SELECT FAV_REPOSITORY FROM USER WHERE ID = %s;'
+            sql = 'SELECT fav_repository FROM user WHERE id = %s;'
             curs.execute(sql, [kakao_id])
             result = curs.fetchall()
 
