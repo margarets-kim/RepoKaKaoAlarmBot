@@ -6,5 +6,5 @@ app_name = 'api'
 urlpatterns = [
     path('', views.UserView.as_view()),
     path('barcode/', views.barcode),
-    path('repoList/', views.barcode)
+    path('repoList/', views.repoList)
 ]
