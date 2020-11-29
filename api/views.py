@@ -173,7 +173,7 @@ def sendList (kakao_id) :
         #conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
         curs = conn.cursor()
 
-        sql = 'SELECT fav_repository FROM user WHERE id = %s;'
+        sql = 'SELECT nick_name FROM user WHERE id = %s;'
         curs.execute(sql, [kakao_id])
         result = curs.fetchall()
 
