@@ -100,12 +100,14 @@ def repoList(request):
                     }
                 }],
                 'quickReplies':[{
-                    'type':'block',
+                    #'type':'block',
                     'label': '입력하기',
-                    'message':'입력하기',
-                    'data':{
-                        'blockId':'5fc34e113ded2277cdfdcab3',
-                    }
+                    'action':'message',
+                    'messageText':'입력하기'
+                    #'message':'입력하기',
+                    # 'data':{
+                    #     'blockId':'5fc34e113ded2277cdfdcab3',
+                    # }
                 }]
             }
         })
