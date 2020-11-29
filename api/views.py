@@ -330,7 +330,7 @@ def repoStatus(request):
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': f"{res}"
+                        'text': res
                     }
                 }],
             }
