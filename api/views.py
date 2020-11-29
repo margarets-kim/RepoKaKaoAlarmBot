@@ -50,7 +50,7 @@ class UserView(APIView):
             if conn != None:
                 conn.close()
 
-@csrf_exempt
+""" @csrf_exempt
 def barcode(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
@@ -79,7 +79,7 @@ def devData(data):
     print(1)
     res=requests.post('http://margarets.pythonanywhere.com/api/', data=data)
     print(2)
-    print(res.status_code)
+    print(res.status_code) """
 
 class GetInfo (APIView) : 
     def get (self, request) :
