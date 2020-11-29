@@ -316,7 +316,8 @@ def repoStatus(request):
     return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
     repoList_arr=sendList(return_str_id)
     
-    return_str_repoAlias=int(return_json_str['action']['detailParams']['repoAlias']['value'])
+    #return_str_repoAlias=int(return_json_str['action']['detailParams']['repoAlias']['value'])
+    return_str_repoAlias=1
     return_str_git_url, return_str_git_branch = returnGit(return_str_id,repoList_arr[return_str_repoAlias-1])
 
     res=batch(return_str_id, return_str_git_url, repoList_arr[return_str_repoAlias-1], 'kakao', return_str_git_branch)
