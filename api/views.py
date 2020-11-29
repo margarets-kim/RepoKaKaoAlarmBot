@@ -83,7 +83,7 @@ def devData(data):
 
 class GetInfo (APIView) : 
     def get (self, request) :
-        fav_repository = request.get.get('fav_repository', '')
+        fav_repository = request.Get.get('fav_repository')
 
         branch_lists = []
 
