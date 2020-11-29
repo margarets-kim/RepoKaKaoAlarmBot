@@ -196,7 +196,6 @@ def returnGit (id, nick_name) :
         sql = 'SELECT fav_repository FROM user WHERE id = %s and nick_name = %s;'
         curs.execute(sql, (id, nick_name))
         result = curs.fetchall()
-        print(result)
 
         for i in result :
             index = i[0].find('branches')-1
@@ -268,7 +267,9 @@ def barcode(request):
     return_str_git_barcodeData=json.loads(return_str_git)
     return_str_branch="main"
 
-    insertDb(return_str_id, return_str_git_barcodeData.get("barcodeData"), "kakao", return_str_alias, return_str_branch)
+    print(return_str_git_barcodeData)
+
+    #insertDb(return_str_id, return_str_git_barcodeData.get("barcodeData"), "kakao", return_str_alias, return_str_branch)
     
     if return_str_skill == '바코드':
         return JsonResponse({
