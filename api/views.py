@@ -264,9 +264,9 @@ def barcode(request):
     return_str_git = return_json_str['action']['detailParams']['barcode']['value']
     return_str_id = return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
 
-    #return_str_git_barcodeData = json.loads(return_str_git)
-    print(return_str_git)
-    print(return_str_git['barcodeData'])
+    return_str_git_barcodeData = json.loads(return_str_git)
+    print(return_str_git_barcodeData)
+    print(return_str_git_barcodeData['barcodeData'])
 
     return_str_git_url = return_str_git_barcodeData.get('barcodeData').get("url")
     return_str_type = return_str_git_barcodeData.get('barcodeData').get("type")
