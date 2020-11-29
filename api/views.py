@@ -197,11 +197,14 @@ def returnGit (id, nick_name) :
         curs.execute(sql, (id, nick_name))
         result = curs.fetchall()
 
-        for i in result :
+        """ for i in result :
             index = i[0].find('branches')-1
             repo_url = i[0][:index]
             index = i[0].rfind('/')+1
-            repo_branch = i[0][index:]
+            repo_branch = i[0][index:] """
+        repo_url='https://github.com/Yubbini/test'
+        repo_branch='main'
+
         
         return repo_url, repo_branch
 
