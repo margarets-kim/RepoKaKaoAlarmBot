@@ -156,10 +156,9 @@ def devData(data):
     print(2)
     print(res.status_code) """
 
-'''class GetRepoInfo (APIView) :
+class GetRepoInfo (APIView) :
     def get (self, request) :
         try :
-            #fav_repository = request.query_params.get('fav_repository', None)
             id = request.query_params.get('id', '')
             repo = request.query_params.get('repo', '')
 
@@ -195,4 +194,4 @@ def devData(data):
             return Response(context, status=200)    
 
         except Exception as e:
-            return Response(str(e), status=404) '''
+            return Response(str(e), status=404)  
