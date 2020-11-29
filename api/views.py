@@ -110,15 +110,12 @@ def batch(id,fav_repository,nick_name,type,branch):
                 branch = str[str.find('branches/'):]
                 branch = branch[branch.find('/'):].replace('/','')
 
-                if j[2] == 'kakao' :
-                    print("카카오를 할 것")
-                else : # 나머지 케이스는 텔레그램
-                    date = datetime.strptime(i[2], '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+1)
-                    timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
-                    content = requests.get(url,headers={'Authorization':'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'},params={'sha':branch,'since':timestampStr})
-                    jsonObject = json.loads(content.content)
-                    return jsonObject
-                    #telegram(j[0],j[1],j[4],jsonObject) # 이 부분 수정 필요
+                date = datetime.strptime(i[2], '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+1)
+                timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
+                content = requests.get(url,headers={'Authorization':'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'},params={'sha':branch,'since':timestampStr})
+                jsonObject = json.loads(content.content)
+                return jsonObject
+                #telegram(j[0],j[1],j[4],jsonObject) # 이 부분 수정 필요
     except Exception as e:
         print(e)
         raise Exception('GITHUB API 호출할때 문제가 생겼습니다.')
