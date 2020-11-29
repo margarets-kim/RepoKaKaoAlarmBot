@@ -182,6 +182,7 @@ class GetRepoInfo (APIView) :
             updated_at = jsonObject_repos.get("updated_at")
             stargazers_count = jsonObject_repos.get("stargazers_count")
             forks = jsonObject_repos.get("forks")
+            owner = jsonObject_repos.get("owner").get("login")
 
             content_branches = requests.get(url_branches, headers={'Authorization': 'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'})
             jsonObject_branches = json.loads(content_branches.content)
@@ -190,35 +191,32 @@ class GetRepoInfo (APIView) :
             for i in range(1, int(json_size)+1):
                 branch_lists.append(jsonObject_branches[i-1].get("name"))
 
-            context = {"avatar_url" : avatar_url, "name" : name, "created_at" : created_at, "updated_at" : updated_at, "stargazers_count" : stargazers_count,  "forks" : forks, "branch_lists" : branch_lists}
+            context = {"avatar_url" : avatar_url, "name" : name, "created_at" : created_at, "updated_at" : updated_at, "stargazers_count" : stargazers_count,  "forks" : forks, "branch_lists" : branch_lists, "owner" : owner}
 
             return Response(context, status=200)    
 
         except Exception as e:
             return Response(str(e), status=404)  
 
-class GetRepoList(APIView) :
-    def get (self, request) :
-        try : 
-            repoList = []
+def sendList (kakao_id) :
+    try : 
+        repoList = []
 
-            kakao_id = request.query_params.get('id', '')
+        conn = None
+        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        #conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
+        curs = conn.cursor()
 
-            conn = None
-            conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
-            #conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
-            curs = conn.cursor()
+        sql = 'SELECT fav_repository FROM user WHERE id = %s;'
+        curs.execute(sql, [kakao_id])
+        result = curs.fetchall()
 
-            sql = 'SELECT fav_repository FROM user WHERE id = %s;'
-            curs.execute(sql, [kakao_id])
-            result = curs.fetchall()
+        for i in result :
+            repoList.append(i[0])
 
-            for i in result :
-                repoList.append(i[0])
-
-            return Response(repoList, status = 200)
-        except Exception as e :
-            return Response(str(e), status = 404)
+        return repoList
+    except Exception as e :
+        return print(str(e))
 
 def insertDb (id, fav_repository, type, nick_name, branch) :
     try:
