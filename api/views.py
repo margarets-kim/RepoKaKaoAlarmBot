@@ -76,7 +76,7 @@ def barcode(request):
             }
         }) """
 
-""" @csrf_exempt
+@csrf_exempt
 def repoList(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
@@ -102,13 +102,13 @@ def repoList(request):
                 'quickReplies':[{
                     'label': '입력하기',
                     'action':'block',
-                    'blockId':'레포상태'
+                    'blockId':'5fc34e113ded2277cdfdcab3'
                     'messageText':'입력하기',
                 }]
             }
-        }) """
+        })
 
-""" @csrf_exempt
+@csrf_exempt
 def repoStatus(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
@@ -125,9 +125,9 @@ def repoStatus(request):
                     }
                 }],
             }
-        }) """
+        })
 
-@csrf_exempt
+""" @csrf_exempt
 def blockId(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
@@ -146,7 +146,7 @@ def blockId(request):
                     }
                 }],
             }
-        })
+        }) """
 
 """ def devData(data):
     print(1)
