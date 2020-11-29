@@ -116,9 +116,4 @@ class GetRepoInfo (APIView) :
             return Response(context, status=200)    
 
         except Exception as e:
-            if conn != None:
-                conn.rollback()
-            return Response(str(e), status=404)
-        finally:
-            if conn != None:
-                conn.close()  
+            return Response(str(e), status=404) 
