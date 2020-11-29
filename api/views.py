@@ -50,7 +50,7 @@ class UserView(APIView):
             if conn != None:
                 conn.close()
 
-""" @csrf_exempt
+@csrf_exempt
 def barcode(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
@@ -62,7 +62,7 @@ def barcode(request):
 
 
     data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
-    devData(data)
+    #devData(data)
     
     if return_str_skill == '바코드':
         return JsonResponse({
@@ -74,9 +74,9 @@ def barcode(request):
                     }
                 }],
             }
-        }) """
+        })
 
-@csrf_exempt
+""" @csrf_exempt
 def repoList(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
@@ -85,10 +85,10 @@ def repoList(request):
     repoList_arr=['첫번째','두번째','세번째','네번째']
     return_str_repoList="등록하신 레포 목록입니다.\n"
 
-    """ for i in range(0,len(repoList_arr),1):
+    for i in range(0,len(repoList_arr),1):
         return_str_repoList+=repoList_arr[0]
         if(i<len(repoList_arr)-1):
-            return_str_repoList+="\n" """
+            return_str_repoList+="\n"
 
     if return_str_skill == '레포리스트':
         return JsonResponse({
@@ -100,7 +100,7 @@ def repoList(request):
                     }
                 }],
             }
-        })
+        }) """
 
 """ def devData(data):
     print(1)
