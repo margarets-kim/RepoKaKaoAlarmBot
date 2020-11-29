@@ -17,6 +17,7 @@ def getRepositoryInfo(fav_repository,branch,flag) :
         if content.status_code !=200 :
             raise Exception("정상적이지 않은 레파지토리 입니다.")
         jsonObject = json.loads(content.content)
+        print(jsonObject)
         create_at = jsonObject.get("commit").get("commit").get("committer").get("date")
         updated_at = jsonObject.get("commit").get("commit").get("committer").get("date")
         #create_at = jsonObject.get("commit").get("commit").get("committer").get("date").replace("T"," ").replace("Z","") # 기본적으로 붙어있는 T와 Z를 없앰
