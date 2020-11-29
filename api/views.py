@@ -85,8 +85,8 @@ class GetRepoInfo (APIView) :
     def get (self, request) :
         try :
             #fav_repository = request.query_params.get('fav_repository', None)
-            id = request.Get.get('id', '')
-            repo = request.Get.get('repo', '')
+            id = request.query_params.get('id', '')
+            repo = request.query_params.get('repo', '')
 
             fav_repository = 'https://github.com/' + id + '/' + repo
 
