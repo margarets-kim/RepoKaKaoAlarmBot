@@ -57,6 +57,7 @@ class UserView(APIView):
         finally:
             if conn != None:
                 conn.close()
+
     def get(self,request):
         id = request.GET.get('id','')
         fav_repository = request.GET.get('fav_repository','')
@@ -195,3 +196,71 @@ class GetRepoInfo (APIView) :
 
         except Exception as e:
             return Response(str(e), status=404)  
+
+class GetRepoList(APIView) :
+    def get (self, request) :
+        try : 
+            repoList = []
+
+            kakao_id = request.query_params.get('id', '')
+
+            conn = None
+            conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+            #conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
+            curs = conn.cursor()
+
+            sql = 'SELECT FAV_REPOSITORY FROM USER WHERE ID = %s;'
+            curs.execute(sql, [kakao_id])
+            result = curs.fetchall()
+
+            for i in result :
+                repoList.append(i[0])
+
+            return Response(repoList, status = 200)
+        except Exception as e :
+            return Response(str(e), status = 404)
+
+def insertDb (id, fav_repository, type, nick_name, branch) :
+    try:
+        conn = None
+        if len(id) == 0:
+            raise Exception('아이디는 비어 있으면 안됩니다.')
+        if len(fav_repository) == 0:
+            raise Exception('관심 레파지토리는 비어 있으면 안됩니다.')
+        if len(nick_name) == 0:
+            raise Exception('별명은 비어 있으면 안됩니다.')
+        if len(type) == 0:
+            raise Exception('타입은 비어 있으면 안됩니다.')
+        if len(branch) == 0:
+            raise Exception('브랜치명은 비어 있으면 안됩니다.')
+        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com',charset='utf8')
+        #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
+        curs = conn.cursor()
+
+        sql = "SELECT DATE_FORMAT(NOW(),'%Y%m%d%H%i%s');"
+        curs.execute(sql)
+        result = curs.fetchall()
+
+        code = githubApi.getRepositoryInfo(fav_repository, branch ,0);  # url parser를 통해 git api 주소를 가지고 온다.
+        if code[0] == 404:
+            raise Exception('정상적이지 않은 레파지토리명 입니다')
+        git_create_at = code[0]
+        git_updated_at = code[1]
+        git_api_address = code[2]
+        fav_repository = fav_repository+"/branches/"+branch
+        sql = "INSERT INTO repository (fav_repository,git_api_address,git_created_at,git_updated_at,created_at,updated_at) " \
+            "VALUES (%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE UPDATED_AT = %s"
+        curs.execute(sql, (fav_repository, git_api_address, git_create_at, git_updated_at, result, result, result))
+
+        sql = "INSERT INTO user (id,fav_repository,nick_name,type,created_at,updated_at) VALUES (%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE UPDATED_AT = %s,NICK_NAME=%s,TYPE=%s"
+        curs.execute(sql, (id, fav_repository, nick_name, type, result, result, result,nick_name,type))
+
+        conn.commit()
+        return print("github API 호출 성공")
+    except Exception as e:
+        if conn != None:
+            conn.rollback()
+        return print(str(e))
+    finally:
+        if conn != None:
+            conn.close()
