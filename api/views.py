@@ -332,7 +332,7 @@ def repoStatus(request):
     return_str_text="날짜 : "+return_str_text+res[0].get("commit").get("author").get("date")+"\n"
     return_str_text="이름 : "+return_str_text+res[0].get("commit").get("author").get("name")+"\n"
     return_str_text="이메일 : "+return_str_text+res[0].get("commit").get("author").get("email")+"\n"
-    return_str_text="커밋메세지 : "+return_str_text+res[0].get("commit").get("committer").get("message")+"\n"
+    return_str_text="커밋메세지 : "+return_str_text+res[0].get("commit").get("message")+"\n"
     return_str_text="주소 : "+return_str_text+res[0].get("html_url")
 
 
