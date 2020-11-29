@@ -259,7 +259,7 @@ def barcode(request):
     return_str_skill=return_json_str['action']['name']
     return_str_git=return_json_str['action']['detailParams']['barcode']['value']
     return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
-    return_str_alias="첫번째레포"
+    return_str_alias="두번째레포"
     return_str_git_barcodeData=json.loads(return_str_git)
     return_str_branch="main"
 
