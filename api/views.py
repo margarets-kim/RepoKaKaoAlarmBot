@@ -114,6 +114,7 @@ def repoStatus(request):
     return_str_skill=return_json_str['action']['name']
 
     #return_str_repoAlias=return_json_str['action']['detilParams']['repoAlias']['value']
+    return_str_user = return_json_str['userRequest']['utterance']
 
     if return_str_skill == '레포상태':
         return JsonResponse({
@@ -121,8 +122,7 @@ def repoStatus(request):
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        #'text': f"{return_str_repoAlias}"
-                        'text': "hi"
+                        'text': f"{return_str_user}"
                     }
                 }],
             }
