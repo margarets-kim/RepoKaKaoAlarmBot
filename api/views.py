@@ -264,10 +264,12 @@ def barcode(request):
     return_str_alias="두번째레포"
     return_str_git_barcodeData=json.loads(return_str_git)
     return_str_branch="main"
+
+    print(return_str_id)
     print(return_str_git_barcodeData.get("barcodeData"))
+    print(return_str_alias)
+    print(return_str_branch)
 
-
-    #def insertDb (id, fav_repository, type, nick_name, branch) :
     insertDb(return_str_id, return_str_git_barcodeData.get("barcodeData"), "kakao", return_str_alias, return_str_branch)
     
     if return_str_skill == '바코드':
@@ -326,6 +328,9 @@ def repoStatus(request):
 
     res=batch(return_str_id, return_str_git_url, repoList_arr[return_str_repoAlias-1], 'kakao', return_str_git_branch)
     print(res)
+
+    if res=="None":
+        res="해당 레포 업데이트 사항이 없습니다"
 
     if return_str_skill == '레포상태':
         return JsonResponse({
