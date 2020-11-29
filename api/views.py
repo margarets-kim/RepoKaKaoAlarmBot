@@ -54,7 +54,7 @@ class UserView(APIView):
 def barcode(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
-    return_str=return_json_str['action']['name']
+    return_str_skill=return_json_str['action']['name']
     return_str_git=return_json_str['action']['detailParams']['barcode']['value']
     return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
     return_str_alias="두번째레포"
@@ -64,7 +64,7 @@ def barcode(request):
     data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
     devData(data)
     
-    if return_str == '바코드':
+    if return_str_skill == '바코드':
         return JsonResponse({
             'version': "2.0",
             'template': {
@@ -76,8 +76,36 @@ def barcode(request):
             }
         })
 
+@csrf_exempt
+def repoList(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str_skill=return_json_str['action']['name']
+
+    repoList_arr=['첫번째','두번째','세번째','네번째']
+    return_str_repoList="등록하신 레포 목록입니다.\n"
+
+    for i in range(0,len(repoList_arr),1):
+        return_str_repoList+=repoList_arr[0]
+        if(i<len(repoList_arr)-1):
+            return_str_repoList+="\n"
+
+    if return_str_skill == '레포리스트':
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"{return_str_repoList}"
+                    }
+                }],
+            }
+        })
+
+
 def devData(data):
     print(1)
     res=requests.post('http://margarets.pythonanywhere.com/api/', data=data)
     print(2)
     print(res.status_code)
+
