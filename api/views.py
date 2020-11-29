@@ -112,7 +112,7 @@ def repoStatus(request):
     return_json_str=json.loads(answer)
     return_str_skill=return_json_str['action']['name']
 
-    return_str_repoAlias=return_json_str['action']['detilParams']['repoAlias2']['value']
+    return_str_repoAlias=return_json_str['action']['detilParams']['repoAlias']['value']
 
     if return_str_skill == '레포상태':
         return JsonResponse({
