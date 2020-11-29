@@ -21,10 +21,8 @@ def getRepositoryInfo(fav_repository,branch,flag) :
         updated_at = jsonObject.get("commit").get("commit").get("committer").get("date")
         #create_at = jsonObject.get("commit").get("commit").get("committer").get("date").replace("T"," ").replace("Z","") # 기본적으로 붙어있는 T와 Z를 없앰
         #create_at = datetime.strptime(create_at, "%Y-%m-%d %H:%M:%S") # 날짜 연산을 위해서 dateType으로 형변환
-
         #updated_at = jsonObject.get("commit").get("commit").get("committer").get("date").replace("T"," ").replace("Z", "") # 기본적으로 붙어있는 T와 Z를 없앰
         #updated_at = datetime.strptime(updated_at, "%Y-%m-%d %H:%M:%S") # 날짜 연산을 위해서 dateType으로 형변환
-
         #create_at = str(create_at + timedelta(hours=9)).replace("-","").replace(":","").replace(" ","") # 9시간 더한 값 저장
         #updated_at = str(updated_at + timedelta(hours=9)).replace("-","").replace(":","").replace(" ","") # 9시간 더한 값 저장
 
