@@ -76,7 +76,7 @@ def barcode(request):
             }
         }) """
 
-@csrf_exempt
+""" @csrf_exempt
 def repoList(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
@@ -106,7 +106,7 @@ def repoList(request):
                     'messageText':'입력하기',
                 }]
             }
-        })
+        }) """
 
 """ @csrf_exempt
 def repoStatus(request):
