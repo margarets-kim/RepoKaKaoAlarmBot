@@ -102,7 +102,6 @@ def repoList(request):
             }
         })
 
-
 def devData(data):
     print(1)
     res=requests.post('http://margarets.pythonanywhere.com/api/', data=data)
