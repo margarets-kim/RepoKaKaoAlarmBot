@@ -50,7 +50,7 @@ class UserView(APIView):
             if conn != None:
                 conn.close()
 
-@csrf_exempt
+""" @csrf_exempt
 def barcode(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
@@ -74,10 +74,10 @@ def barcode(request):
                     }
                 }],
             }
-        })
+        }) """
 
-""" @csrf_exempt
-def repoList(request):
+@csrf_exempt
+def repo(request):
     answer = ((request.body).decode('utf-8'))
     return_json_str=json.loads(answer)
     return_str_skill=return_json_str['action']['name']
@@ -100,7 +100,7 @@ def repoList(request):
                     }
                 }],
             }
-        }) """
+        })
 
 """ def devData(data):
     print(1)
