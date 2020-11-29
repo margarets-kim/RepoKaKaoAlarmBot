@@ -259,18 +259,20 @@ def insertDb (id, fav_repository, type, nick_name, branch) :
 @csrf_exempt
 def barcode(request):
     answer = ((request.body).decode('utf-8'))
-    return_json_str=json.loads(answer)
-    return_str_skill=return_json_str['action']['name']
-    return_str_git=return_json_str['action']['detailParams']['barcode']['value']
-    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+    return_json_str = json.loads(answer)
+    return_str_skill = return_json_str['action']['name']
+    return_str_git = return_json_str['action']['detailParams']['barcode']['value']
+    return_str_id = return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
 
-    return_str_git_barcodeData=json.loads(return_str_git)
+    return_str_git_barcodeData = json.loads(return_str_git.barcodeData)
+    print(return_str_git_barcodeData)
 
     return_str_git_url=return_str_git_barcodeData.get("barcodeData").get("url")
+    return_str_type=return_str_git_barcodeData.get("barcode").get("type")
     return_str_alias=return_str_git_barcodeData.get("barcodeData").get("alias")
     return_str_branch=return_str_git_barcodeData.get("barcodeData").get("branch")
 
-    insertDb(return_str_id, return_str_git_url, "kakao", return_str_alias, return_str_branch)
+    insertDb(return_str_id, return_str_git_url, return_str_type, return_str_alias, return_str_branch)
     
     if return_str_skill == '바코드':
         return JsonResponse({
