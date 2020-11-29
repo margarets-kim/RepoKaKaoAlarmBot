@@ -40,7 +40,7 @@ def batch():
                     if j[2] == 'kakao' :
                         print("카카오를 할 것")
                     else : # 나머지 케이스는 텔레그램
-                        date = datetime.strptime(dataList[1], '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+1)
+                        date = datetime.strptime(i[2], '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+1)
                         timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
                         content = requests.get(url,headers={'Authorization':'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'},params={'sha':branch,'since':timestampStr})
                         jsonObject = json.loads(content.content)
