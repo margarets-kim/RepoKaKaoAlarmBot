@@ -326,7 +326,10 @@ def repoStatus(request):
     return_str_git_url, return_str_git_branch = returnGit(return_str_id,repoList_arr[return_str_repoAlias-1])
 
     res=batch(return_str_id, return_str_git_url, repoList_arr[return_str_repoAlias-1], 'kakao', return_str_git_branch)
-    print(res)
+    return_res=json.loads(res)
+    print(return_res[commit])
+
+
 
     if res=="None":
         res="해당 레포 업데이트 사항이 없습니다"
