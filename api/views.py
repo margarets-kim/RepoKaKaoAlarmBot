@@ -189,19 +189,21 @@ def returnGit (id, nick_name) :
         repoList = []
 
         conn = None
-        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
-        #conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
+        #conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
         curs = conn.cursor()
 
-        sql = 'SELECT fav_repository, type FROM user WHERE id = %s and nick_name = %s;'
+        sql = 'SELECT fav_repository FROM user WHERE id = %s and nick_name = %s;'
         curs.execute(sql, (id, nick_name))
         result = curs.fetchall()
 
-        fav_repository = result[0][0]
-        #branch = result[0][1]
-        branch='main'
+        for i in result :
+            index = i[0].find('branches')-1
+            repoList.append(i[0][:index])
+            index = i[0].rfind('/')+1
+            repoList.append(i[0][index:])
+        return repoList
 
-        return fav_repository, branch
     except Exception as e :
         return print(str(e))
 
@@ -262,8 +264,11 @@ def barcode(request):
     return_str_alias="두번째레포"
     return_str_git_barcodeData=json.loads(return_str_git)
     return_str_branch="main"
+    print(return_str_git_barcodeData.get("barcodeData"))
 
-    insertDb(return_str_id,return_str_git_barcodeData.get("barcodeData"),"kakao",return_str_alias,return_str_branch)
+
+    #def insertDb (id, fav_repository, type, nick_name, branch) :
+    insertDb(return_str_id, return_str_git_barcodeData.get("barcodeData"), "kakao", return_str_alias, return_str_branch)
     
     if return_str_skill == '바코드':
         return JsonResponse({
