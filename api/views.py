@@ -85,10 +85,10 @@ def repoList(request):
     repoList_arr=['첫번째','두번째','세번째','네번째']
     return_str_repoList="등록하신 레포 목록입니다.\n"
 
-    for i in range(0,len(repoList_arr),1):
+    """ for i in range(0,len(repoList_arr),1):
         return_str_repoList+=repoList_arr[0]
         if(i<len(repoList_arr)-1):
-            return_str_repoList+="\n"
+            return_str_repoList+="\n" """
 
     if return_str_skill == '레포리스트':
         return JsonResponse({
@@ -102,9 +102,9 @@ def repoList(request):
             }
         })
 
-def devData(data):
+""" def devData(data):
     print(1)
     res=requests.post('http://margarets.pythonanywhere.com/api/', data=data)
     print(2)
     print(res.status_code)
-
+ """
