@@ -123,37 +123,6 @@ def batch(id,fav_repository,nick_name,type,branch):
         if conn != None:
             conn.close()
 
-""" @csrf_exempt
-def barcode(request):
-    answer = ((request.body).decode('utf-8'))
-    return_json_str=json.loads(answer)
-    return_str_skill=return_json_str['action']['name']
-    return_str_git=return_json_str['action']['detailParams']['barcode']['value']
-    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
-    return_str_alias="두번째레포"
-    return_str_git_barcodeData=json.loads(return_str_git)
-
-
-    data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
-    #devData(data)
-    
-    if return_str_skill == '바코드':
-        return JsonResponse({
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': f"[{return_str_alias}] 등록 완료!"
-                    }
-                }],
-            }
-        })
-def devData(data):
-    print(1)
-    res=requests.post('http://margarets.pythonanywhere.com/api/', data=data)
-    print(2)
-    print(res.status_code) """
-
 class GetRepoInfo (APIView) :
     def get (self, request) :
         try :
@@ -215,6 +184,26 @@ def sendList (kakao_id) :
     except Exception as e :
         return print(str(e))
 
+def returnGit (id, nick_name) :
+    try : 
+        repoList = []
+
+        conn = None
+        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        #conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
+        curs = conn.cursor()
+
+        sql = 'SELECT fav_repository, type FROM user WHERE id = %s and nick_name = %s;'
+        curs.execute(sql, (id, nick_name))
+        result = curs.fetchall()
+
+        fav_repository = result[0][0]
+        type = result[0][1]
+
+        return fav_repository, type
+    except Exception as e :
+        return print(str(e))
+
 def insertDb (id, fav_repository, type, nick_name, branch) :
     try:
         conn = None
@@ -259,3 +248,86 @@ def insertDb (id, fav_repository, type, nick_name, branch) :
     finally:
         if conn != None:
             conn.close()
+
+##########################################################################################kakao
+
+@csrf_exempt
+def barcode(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str_skill=return_json_str['action']['name']
+    return_str_git=return_json_str['action']['detailParams']['barcode']['value']
+    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+    return_str_alias="첫번째레포"
+    return_str_git_barcodeData=json.loads(return_str_git)
+    return_str_branch="main"
+
+    insertDb(return_str_id,return_str_git_barcodeData.get("barcodeData"),kakao,return_str_alias,return_str_branch)
+    
+    if return_str_skill == '바코드':
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"[{return_str_alias}] 등록 완료!"
+                    }
+                }],
+            }
+        })
+
+@csrf_exempt
+def repoList(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str_skill=return_json_str['action']['name']
+    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+
+    repoList_arr=sendList(return_str_id)
+    return_str_repoList="등록하신 레포 목록입니다.\n"
+
+    for i in range(0,len(repoList_arr),1):
+        return_str_repoList=return_str_repoList+str(i+1)+". "+repoList_arr[i]
+        if(i<len(repoList_arr)-1):
+            return_str_repoList+="\n"
+
+    if return_str_skill == '레포리스트':
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"{return_str_repoList}"
+                    }
+                }],
+                'quickReplies':[{
+                    'label': '입력하기',
+                    'action': 'message',
+                }]
+            }
+        })
+
+@csrf_exempt
+def repoStatus(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str_skill=return_json_str['action']['name']
+    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+    repoList_arr=sendList(return_str_id)
+    
+    return_str_repoAlias=return_json_str['action']['detailParams']['repoAlias']['value']
+    return_str_git_url, return_str_git_branch = returnGit(return_str_id,repoList_arr[int(return_str_repoAlias)-1])
+
+    res=batch(return_str_id, return_str_git_url, repoList_arr[int(return_str_repoAlias)-1], kakao, return_str_git_branch)
+
+    if return_str_skill == '레포상태':
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"{res}"
+                    }
+                }],
+            }
+        })
