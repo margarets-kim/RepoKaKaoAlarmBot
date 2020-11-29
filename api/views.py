@@ -86,7 +86,7 @@ def repoList(request):
     return_str_repoList="등록하신 레포 목록입니다.\n"
 
     for i in range(0,len(repoList_arr),1):
-        return_str_repoList+=repoList_arr[i]
+        return_str_repoList=return_str_repoList+i+". "+repoList_arr[i]
         if(i<len(repoList_arr)-1):
             return_str_repoList+="\n"
 
@@ -96,7 +96,7 @@ def repoList(request):
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': f"{return_str_repoList}\n 위에서 한가지를 입력해주세요"
+                        'text': f"{return_str_repoList}"
                     }
                 }],
                 'quickReplies':[{
