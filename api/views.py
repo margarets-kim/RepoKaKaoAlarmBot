@@ -198,9 +198,10 @@ def returnGit (id, nick_name) :
         result = curs.fetchall()
 
         fav_repository = result[0][0]
-        type = result[0][1]
+        #branch = result[0][1]
+        branch='main'
 
-        return fav_repository, type
+        return fav_repository, branch
     except Exception as e :
         return print(str(e))
 
