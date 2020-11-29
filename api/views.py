@@ -5,6 +5,7 @@ from . import githubApi
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json, requests
+from datetime import datetime, timedelta
 
 class UserView(APIView):
     def post(self, request):
@@ -56,6 +57,73 @@ class UserView(APIView):
         finally:
             if conn != None:
                 conn.close()
+    def get(self,request):
+        id = request.GET.get('id','')
+        fav_repository = request.GET.get('fav_repository','')
+        nick_name = request.GET.get('nick_name', '')
+        type = request.GET.get('type', '')
+        branch = request.GET.get('branch', '')
+
+        try:
+            if len(id) == 0:
+                raise Exception('아이디는 비어 있으면 안됩니다.')
+            if len(fav_repository) == 0:
+                raise Exception('관심 레파지토리는 비어 있으면 안됩니다.')
+            if len(nick_name) == 0:
+                raise Exception('별명은 비어 있으면 안됩니다.')
+            if len(type) == 0:
+                raise Exception('타입은 비어 있으면 안됩니다.')
+            if len(branch) == 0:
+                raise Exception('브랜치명은 비어 있으면 안됩니다.')
+            json = batch(id,fav_repository,nick_name,type,branch)
+            return Response(json, status=200)
+        except Exception as e:
+            return Response("error", status=404)
+
+def batch(id,fav_repository,nick_name,type,branch):
+    try:
+        conn = None
+        fav_repository = fav_repository + "branches/" + branch
+        #conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
+        curs = conn.cursor()
+        sql = "SELECT a.git_api_address,a.fav_repository,a.git_updated_at FROM repository a inner join user b on a.fav_repository = b.fav_repository WHERE b.id=%s AND b.type=%s AND b.fav_repository=%s";
+        curs.execute(sql, (id,type,fav_repository))
+        result = curs.fetchall()
+
+        sql = "SELECT DATE_FORMAT(NOW(),'%Y%m%d%H%i%s');"
+        curs.execute(sql)
+        time = curs.fetchall()
+
+        for i in result:
+            dataList = githubApi.getRepositoryInfo(i[0], None , 1)
+            if dataList[0] == 404:
+                raise Exception('GITHUB API 호출할때 문제가 생겼습니다.')
+            sql = "SELECT b.id,b.nick_name,b.type,a.git_api_address,a.fav_repository FROM repository a inner join user b on a.fav_repository = b.fav_repository WHERE b.id=%s AND b.type=%s AND b.fav_repository=%s";
+            curs.execute(sql, (id,type,fav_repository))
+            result = curs.fetchall()
+            for j in result:
+                str = j[3]
+                index = str.find('branches')
+                url = str[:index]+"commits"
+                branch = str[str.find('branches/'):]
+                branch = branch[branch.find('/'):].replace('/','')
+
+                if j[2] == 'kakao' :
+                    print("카카오를 할 것")
+                else : # 나머지 케이스는 텔레그램
+                    date = datetime.strptime(dataList[1], '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+1)
+                    timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
+                    content = requests.get(url,headers={'Authorization':'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'},params={'sha':branch,'since':timestampStr})
+                    jsonObject = json.loads(content.content)
+                    return jsonObject
+                    #telegram(j[0],j[1],j[4],jsonObject) # 이 부분 수정 필요
+    except Exception as e:
+        print(e)
+        raise Exception('GITHUB API 호출할때 문제가 생겼습니다.')
+    finally:
+        if conn != None:
+            conn.close()
 
 @csrf_exempt
 def barcode(request):
