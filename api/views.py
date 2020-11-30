@@ -266,8 +266,11 @@ def barcode(request):
 
     return_str_git_barcodeData = json.loads(return_str_git)
 
+    test=str(return_str_git_barcodeData).replace("\"","'")
+
     print(return_str_git_barcodeData)
     print(str(return_str_git_barcodeData).replace("\"","'"))
+    print(test.get('barcodeData').get('url'))
     print(return_str_git_barcodeData)
     print(return_str_git_barcodeData['barcodeData'])
 
