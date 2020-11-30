@@ -268,33 +268,33 @@ def barcode(request):
 
     test=str(return_str_git_barcodeData)
 
-    index = test.find('\'')
+    """ index = test.find('\'')
     test = test.replace(test[index], "\"", 1)
     index = test.find('\'')
     test = test.replace(test[index], "\"", 1)
     index = test.find('\'')
     test = test.replace(test[index], "", 1)
     index = test.find('\'')
-    test = test.replace(test[index], "", 1)
+    test = test.replace(test[index], "", 1) """
 
     print(test)
 
-    #a=list(test)
-    #a[16]=""
-    #a[-2]=""
-    #print("test"+test)
-    #print(return_str_git_barcodeData)
-    #print(a)
-    #print("".join(a))
-    #b=str("".join(a))
-    #test2=json.loads(b)
-    ##print("test_return"+test_return)
-    #print("test2"+test2)
-    #print(test2.get('barcodeData'))
-    #print(test2.get('barcodeData').get('url'))
-    #print(test2['barcodeData']['url'])
-    #print(return_str_git_barcodeData)
-    #print(return_str_git_barcodeData['barcodeData'])
+    a=list(test)
+    a[16]=""
+    a[-2]=""
+    print("test"+test)
+    print(return_str_git_barcodeData)
+    print(a)
+    print("".join(a))
+    b="".join(a)
+    test2=json.loads(b)
+    #print("test_return"+test_return)
+    print("test2"+test2)
+    print(test2.get('barcodeData'))
+    print(test2.get('barcodeData').get('url'))
+    print(test2['barcodeData']['url'])
+    print(return_str_git_barcodeData)
+    print(return_str_git_barcodeData['barcodeData'])
 
     return_str_git_barcodeData = json.loads(test)
     print(return_str_git_barcodeData)
