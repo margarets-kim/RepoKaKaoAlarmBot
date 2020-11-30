@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json, requests
 from datetime import datetime, timedelta
+from urllib import parse
 
 class UserView(APIView):
     def post(self, request):
@@ -123,37 +124,6 @@ def batch(id,fav_repository,nick_name,type,branch):
         if conn != None:
             conn.close()
 
-""" @csrf_exempt
-def barcode(request):
-    answer = ((request.body).decode('utf-8'))
-    return_json_str=json.loads(answer)
-    return_str_skill=return_json_str['action']['name']
-    return_str_git=return_json_str['action']['detailParams']['barcode']['value']
-    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
-    return_str_alias="두번째레포"
-    return_str_git_barcodeData=json.loads(return_str_git)
-
-
-    data = {'fav_repository':return_str_git_barcodeData.get("barcodeData"),'nick_name':return_str_alias,'id':return_str_id}
-    #devData(data)
-    
-    if return_str_skill == '바코드':
-        return JsonResponse({
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': f"[{return_str_alias}] 등록 완료!"
-                    }
-                }],
-            }
-        })
-def devData(data):
-    print(1)
-    res=requests.post('http://margarets.pythonanywhere.com/api/', data=data)
-    print(2)
-    print(res.status_code) """
-
 class GetRepoInfo (APIView) :
     def get (self, request) :
         try :
@@ -204,7 +174,7 @@ def sendList (kakao_id) :
         #conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
         curs = conn.cursor()
 
-        sql = 'SELECT fav_repository FROM user WHERE id = %s;'
+        sql = 'SELECT nick_name FROM user WHERE id = %s;'
         curs.execute(sql, [kakao_id])
         result = curs.fetchall()
 
@@ -212,6 +182,31 @@ def sendList (kakao_id) :
             repoList.append(i[0])
 
         return repoList
+    except Exception as e :
+        return print(str(e))
+
+def returnGit (id, nick_name) :
+    try : 
+        repoList = []
+
+        conn = None
+        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        #conn = MySQLdb.connect(user='root', password='@dbclfr0506', db='open_source',host='localhost', charset='utf8')
+        curs = conn.cursor()
+
+        sql = 'SELECT fav_repository FROM user WHERE id = %s and nick_name = %s;'
+        curs.execute(sql, (id, nick_name))
+        result = curs.fetchall()
+
+        for i in result :
+            index = i[0].find('branches')-1
+            repo_url = i[0][:index]
+            index = i[0].rfind('/')+1
+            repo_branch = i[0][index:]
+
+        
+        return repo_url, repo_branch
+
     except Exception as e :
         return print(str(e))
 
@@ -259,3 +254,133 @@ def insertDb (id, fav_repository, type, nick_name, branch) :
     finally:
         if conn != None:
             conn.close()
+
+##########################################################################################kakao
+
+@csrf_exempt
+def barcode(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str = json.loads(answer)
+    return_str_skill = return_json_str['action']['name']
+    return_str_git = return_json_str['action']['detailParams']['barcode']['value']
+    return_str_id = return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+
+    return_str_git_barcodeData = json.loads(return_str_git)
+
+    temp = str(return_str_git_barcodeData)
+
+    index = temp.find('\'')
+    temp = temp.replace(temp[index], "\"", 1)
+    index = temp.find('\'')
+    temp = temp.replace(temp[index], "\"", 1)
+    index = temp.find('\'')
+    temp = temp.replace(temp[index], "", 1)
+    index = temp.find('\'')
+    temp = temp.replace(temp[index], "", 1)
+
+    return_str_git_barcodeData = json.loads(temp)
+
+    return_str_git_url = return_str_git_barcodeData['barcodeData']['url']
+    return_str_type = return_str_git_barcodeData['barcodeData']['type']
+    return_str_alias = return_str_git_barcodeData['barcodeData']['alias']
+    return_str_branch = return_str_git_barcodeData['barcodeData']['branch']
+
+    return_str_alias = parse.unquote(return_str_alias)
+
+    insertDb(return_str_id, return_str_git_url, return_str_type, return_str_alias, return_str_branch)
+    
+    if return_str_skill == '바코드':
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"[{return_str_alias}] 등록 완료!"
+                    }
+                }],
+            }
+        })
+
+@csrf_exempt
+def repoList(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str=json.loads(answer)
+    return_str_skill=return_json_str['action']['name']
+    return_str_id=return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+
+    repoList_arr=sendList(return_str_id)
+    return_str_repoList="등록하신 레포 목록입니다.\n"
+
+    for i in range(0,len(repoList_arr),1):
+        return_str_repoList=return_str_repoList+str(i+1)+". "+repoList_arr[i]
+        if(i<len(repoList_arr)-1):
+            return_str_repoList+="\n"
+
+    if return_str_skill == '레포리스트':
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"{return_str_repoList}"
+                    }
+                }],
+                'quickReplies':[{
+                    'label': '입력하기',
+                    'action': 'message',
+                }]
+            }
+        })
+
+def changeKST(ISO):
+    yyyymmdd, time = ISO.split('T')
+    yyyy, mm, dd = yyyymmdd.split('-')
+    hour, minute, second = time.split(':')
+    second,Z = second.split('Z')
+    hour=str(int(hour)+9)
+    #KST = yyyy + "년" + mm + "월" + dd + "일 " + hour + "시" + minute + "분" + second + "초"
+    KST = yyyymmdd + " " + hour + ":" + minute + ":" + second
+    return KST
+
+@csrf_exempt
+def repoStatus(request):
+    answer = ((request.body).decode('utf-8'))
+    return_json_str = json.loads(answer)
+    return_str_skill = return_json_str['action']['name']
+    return_str_id = return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
+    repoList_arr = sendList(return_str_id)
+    
+    return_str_repoAlias = int(return_json_str['action']['detailParams']['repoAlias']['value'])
+    return_str_git_url, return_str_git_branch = returnGit(return_str_id,repoList_arr[return_str_repoAlias-1])
+
+    res = batch(return_str_id, return_str_git_url, repoList_arr[return_str_repoAlias-1], 'kakao', return_str_git_branch)
+
+    return_str_text=res
+
+    if res == []:
+        return_str_text = "해당 레포 업데이트 사항이 없습니다"
+
+    elif res == None:
+        return_str_text = "해당 레포 업데이트 사항이 없습니다"
+
+    else :
+        ISO = res[0].get("commit").get("committer").get("date")
+        KST = changeKST(ISO)
+        return_str_text = f"[{repoList_arr[return_str_repoAlias-1]}] 최근 커밋 이력입니다.\n"
+        return_str_text = return_str_text + "날짜 : " + KST + "\n"
+        return_str_text = return_str_text + "이름 : " + res[0].get("commit").get("committer").get("name") + "\n"
+        return_str_text = return_str_text + "이메일 : " + res[0].get("commit").get("committer").get("email") + "\n"
+        return_str_text = return_str_text + "커밋메세지 : " + res[0].get("commit").get("message") + "\n"
+        return_str_text = return_str_text + "주소 : " + res[0].get("html_url")
+
+    if return_str_skill == '레포상태':
+        return JsonResponse({
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f"{return_str_text}"
+                    }
+                }],
+            }
+        })
