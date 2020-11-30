@@ -280,9 +280,9 @@ def barcode(request):
     a=list(test)
     a[16]=""
     a[-2]=""
-    b="".join(a)
-    return_test=b.replace("'","\"")
-    test2=json.loads(return_test)
+    b=("".join(a))
+    b=b.replace("'","\"")
+    test2=json.loads(b)
     print("test2"+test2)
     print(test2.get('barcodeData'))
     print(test2.get('barcodeData').get('url'))
