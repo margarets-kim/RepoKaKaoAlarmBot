@@ -267,11 +267,15 @@ def barcode(request):
     return_str_git_barcodeData = json.loads(return_str_git)
 
     test=str(return_str_git_barcodeData)
-    test[16]=""
-    test[-2]=""
+    a=list(test)
+    a[16]=""
+    a[-2]=""
+
+
 
     print(return_str_git_barcodeData)
-    print(test)
+    print(a)
+    print("".join(a))
     test_return=json.dumps(test)
     test2=json.loads(test_return)
     print(test_return)
