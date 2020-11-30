@@ -266,6 +266,8 @@ def barcode(request):
 
     return_str_git_barcodeData = json.loads(return_str_git)
     print(return_str_git_barcodeData)
+    return_str_git_barcodeData(16) = ""
+    return_str_git_barcodeData(-2) = ""
     print(return_str_git_barcodeData['barcodeData'])
 
     return_str_git_url = return_str_git_barcodeData.get('barcodeData').get("url")
