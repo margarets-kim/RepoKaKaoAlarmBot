@@ -275,7 +275,7 @@ def barcode(request):
     print(a)
     print("".join(a))
     b=str("".join(a))
-    c=b.replace("'","\"")
+    c=b.replace("\"","'")
     test_return=json.dumps(c)
     test2=json.loads(test_return)
     print("test_return"+test_return)
