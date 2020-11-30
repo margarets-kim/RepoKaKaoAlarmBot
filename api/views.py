@@ -280,6 +280,7 @@ def barcode(request):
     test2=json.loads(test_return)
     print("test_return"+test_return)
     print("test2"+test2)
+    print(test2['barcodeData'])
     print(test2['barcodeData']['url'])
     print(return_str_git_barcodeData)
     print(return_str_git_barcodeData['barcodeData'])
