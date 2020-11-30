@@ -256,25 +256,6 @@ def insertDb (id, fav_repository, type, nick_name, branch) :
 
 ##########################################################################################kakao
 
-def replaceRight(original, old, new, count_right):
-    repeat=0
-    text = original
-    old_len = len(old)
-    
-    count_find = original.count(old)
-    if count_right > count_find : # 바꿀 횟수가 문자열에 포함된 old보다 많다면
-        repeat = count_find # 문자열에 포함된 old의 모든 개수(count_find)만큼 교체한다
-    else :
-        repeat = count_right # 아니라면 입력받은 개수(count)만큼 교체한다
-
-    while(repeat):
-      find_index = text.rfind(old) # 오른쪽부터 index를 찾기위해 rfind 사용
-      text = text[:find_index] + new + text[find_index+old_len:]
-
-      repeat -= 1
-      
-    return text
-
 @csrf_exempt
 def barcode(request):
     answer = ((request.body).decode('utf-8'))
@@ -284,8 +265,12 @@ def barcode(request):
     return_str_id = return_json_str['userRequest']['user']['properties']['plusfriendUserKey']
 
     return_str_git_barcodeData = json.loads(return_str_git)
-    print(replaceRight(return_str_git_barcodeData, "'","",2))
+
     print(return_str_git_barcodeData)
+    print(return_str_git_barcodeData[0])
+    print(return_str_git_barcodeData[1])
+    print(return_str_git_barcodeData[2])
+    print(return_str_git_barcodeData[3])
     print(return_str_git_barcodeData['barcodeData'])
 
     return_str_git_url = return_str_git_barcodeData.get('barcodeData').get("url")
