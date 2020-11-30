@@ -270,6 +270,7 @@ def barcode(request):
     a=list(test)
     a[16]=""
     a[-2]=""
+    print("test"+test)
 
     print(return_str_git_barcodeData)
     print(a)
