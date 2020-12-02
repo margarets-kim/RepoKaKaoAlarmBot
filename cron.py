@@ -6,8 +6,8 @@ def batch():
     print("깃 허브쪽 배치 프로그램이 돌고 있습니다.")  # 배치 프로그램이 돌고 있다는 로그남김 log
     try:
         conn = None
-        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
-        #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
+        #conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
         curs = conn.cursor()
 
         sql = "SELECT GIT_API_ADDRESS,FAV_REPOSITORY,GIT_UPDATED_AT FROM repository;"
@@ -29,8 +29,8 @@ def batch():
                 sql = "SELECT b.id,b.nick_name,b.type,a.git_api_address,a.fav_repository FROM repository a LEFT JOIN user b ON a.fav_repository = b.fav_repository WHERE a.fav_repository=%s";
                 curs.execute(sql, [i[1]])
 
-                result = curs.fetchall()
-                for j in result:
+                result2 = curs.fetchall()
+                for j in result2:
                     str = j[3]
                     index = str.find('branches')
                     url = str[:index]+"commits"
@@ -58,3 +58,4 @@ def telegram(id,nick_name,fav_repository,json) :
 
 while True:    # while에 True를 지정하면 무한 루프
     batch()
+    time.sleep(60)
