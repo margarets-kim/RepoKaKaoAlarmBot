@@ -44,9 +44,8 @@ class UserView(APIView):
             sql = "INSERT INTO repository (fav_repository,git_api_address,git_created_at,git_updated_at,created_at,updated_at) " \
                   "VALUES (%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE UPDATED_AT = %s"
             curs.execute(sql, (fav_repository, git_api_address, git_create_at, git_updated_at, result, result, result))
-
-            sql = "INSERT INTO user (id,fav_repository,nick_name,type,created_at,updated_at) VALUES (%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE UPDATED_AT = %s,NICK_NAME=%s,TYPE=%s"
-            curs.execute(sql, (id, fav_repository, nick_name, type, result, result, result,nick_name,type))
+            sql = "INSERT INTO user (id,fav_repository,nick_name,type,created_at,updated_at,user_get_date) VALUES (%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE UPDATED_AT = %s,NICK_NAME=%s,TYPE=%s,user_get_date=%s"
+            curs.execute(sql, (id, fav_repository, nick_name, type, result, result, git_updated_at ,result,nick_name,type,git_updated_at))
 
             conn.commit()
             return Response("정상적으로 api 호출 완료", status=200)
@@ -88,7 +87,7 @@ def batch(id,fav_repository,nick_name,type,branch):
         conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
         #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
         curs = conn.cursor()
-        sql = "SELECT a.git_api_address,a.fav_repository,a.git_updated_at FROM repository a inner join user b on a.fav_repository = b.fav_repository WHERE b.id=%s AND b.type=%s AND b.fav_repository=%s";
+        sql = "SELECT a.git_api_address,a.fav_repository,b.user_get_date FROM repository a inner join user b on a.fav_repository = b.fav_repository WHERE b.id=%s AND b.type=%s AND b.fav_repository=%s";
         curs.execute(sql, (id,type,fav_repository))
         result = curs.fetchall()
 
@@ -96,20 +95,23 @@ def batch(id,fav_repository,nick_name,type,branch):
         curs.execute(sql)
         time = curs.fetchall()
 
-        for i in result:
+        for i in result: # 사실 포문 쓰는게 이상하긴 함(1건만 항상 나오므로..)
             dataList = githubApi.getRepositoryInfo(i[0], None , 1)
             if dataList[0] == 404:
                 raise Exception('GITHUB API 호출할때 문제가 생겼습니다.')
             sql = "SELECT b.id,b.nick_name,b.type,a.git_api_address,a.fav_repository FROM repository a inner join user b on a.fav_repository = b.fav_repository WHERE b.id=%s AND b.type=%s AND b.fav_repository=%s";
             curs.execute(sql, (id,type,fav_repository))
             result = curs.fetchall()
-            for j in result:
+            for j in result: # 사실 포문 쓰는게 이상하긴 함(1건만 항상 나오므로..)
+                sql = "UPDATE user SET user_get_date=(select concat(concat(concat(left(UTC_TIMESTAMP(),10),'T'),(select substring(UTC_TIMESTAMP(),12))),'Z')) WHERE id=%s AND type=%s AND fav_repository=%s"
+                curs.execute(sql, (id, type, fav_repository))
+                conn.commit()
+
                 str = j[3]
                 index = str.find('branches')
                 url = str[:index]+"commits"
                 branch = str[str.find('branches/'):]
                 branch = branch[branch.find('/'):].replace('/','')
-
                 date = datetime.strptime(i[2], '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+1)
                 timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
                 content = requests.get(url,headers={'Authorization':'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'},params={'sha':branch,'since':timestampStr})
