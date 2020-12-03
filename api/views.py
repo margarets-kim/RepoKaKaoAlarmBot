@@ -8,6 +8,13 @@ import json, requests
 from datetime import datetime, timedelta
 from urllib import parse
 
+TOKEN="1259085830:AAFNuPKWM4yNnn1xvdNip9ADGZGCMb4sFmk"
+url = f"https://api.telegram.org/bot{TOKEN}/getUpdates"
+
+p=requests.post(url).json()
+
+print(p)
+
 class UserView(APIView):
     def post(self, request):
         id = request.POST.get('id','')
