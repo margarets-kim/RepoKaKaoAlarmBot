@@ -185,10 +185,10 @@ class SendAlias (APIView) :
 
             for i in result :
                 repoList.append(i[0])
+            
+            jsonAlias = {"alias" : repoList}
 
-             jsonObject = {"alias" : repoList}
-
-            return Response(jsonObject, status=200)
+            return Response(jsonAlias, status=200)
             
         except Exception as e :
             return Response(str(e), status=404)
