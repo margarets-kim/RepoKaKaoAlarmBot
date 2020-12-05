@@ -127,6 +127,7 @@ def batch(id,fav_repository,nick_name,type,branch):
         if conn != None:
             conn.close()
 
+# 프론트에게 레포 관련 정보들을 전달하는 api
 class GetRepoInfo (APIView) :
     def get (self, request) :
         try :
