@@ -82,6 +82,13 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # ë
         "msg" : msg,
         "url" : url
     }
+    print(id)
+    print(nick_name)
+    print(date)
+    print(name)
+    print(email)
+    print(msg)
+    print(url)
     
     url = "https://alarm-bot-repo.herokuapp.com/api/"
 
