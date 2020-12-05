@@ -217,7 +217,6 @@ class SendGitInfo (APIView) :
                 repo_branch = i[0][index:]
 
             json_git = {"repoUrl" : repo_url, "repoBranch" : repo_branch}
-            
             return Response(json_git, status=200)
 
         except Exception as e :
@@ -240,6 +239,7 @@ def sendList (kakao_id) :
             repoList.append(i[0])
 
         return repoList
+
     except Exception as e :
         return print(str(e))
 
@@ -258,7 +258,6 @@ def returnGit (id, nick_name) :
             repo_url = i[0][:index]
             index = i[0].rfind('/')+1
             repo_branch = i[0][index:]
-
         
         return repo_url, repo_branch
 
@@ -302,10 +301,12 @@ def insertDb (id, fav_repository, type, nick_name, branch) :
 
         conn.commit()
         return print("github API 호출 성공")
+
     except Exception as e:
         if conn != None:
             conn.rollback()
         return print(str(e))
+        
     finally:
         if conn != None:
             conn.close()
