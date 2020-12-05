@@ -193,6 +193,7 @@ class SendAlias (APIView) :
         except Exception as e :
             return Response(str(e), status=404)
 
+# id와 nick_name에 해당하는 레포 전달해주는 api
 class SendGitInfo (APIView) :
     def get (self, request) :
         try :
@@ -222,7 +223,7 @@ class SendGitInfo (APIView) :
         except Exception as e :
             return Response(str(e), status=404)
 
-
+# id에 해당하는 nick_name목록 전달
 def sendList (kakao_id) :
     try : 
         repoList = []
@@ -243,6 +244,7 @@ def sendList (kakao_id) :
     except Exception as e :
         return print(str(e))
 
+# id와 nick_name에 해당하는 레포 전달
 def returnGit (id, nick_name) :
     try : 
         conn = None
