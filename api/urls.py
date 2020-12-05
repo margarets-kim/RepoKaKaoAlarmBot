@@ -9,5 +9,6 @@ urlpatterns = [
     path('repoList/', views.repoList),
     path('repoStatus/', views.repoStatus),
     path('info/', views.GetRepoInfo.as_view()),
-    path('alias/', views.SendAlias.as_view())
+    path('alias/', views.SendAlias.as_view()),
+    path('git/', views.SendGitInfo.as_view())
 ]
