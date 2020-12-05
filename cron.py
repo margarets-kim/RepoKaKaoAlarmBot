@@ -67,10 +67,20 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # ë
         curs.execute(sql,(updated_date,id,fav_repository))
     print(json)
     
+    date = json[0].get("commit").get("committer").get("date")
+    name = json[0].get("commit").get("committer").get("name")
+    email = json[0].get("commit").get("committer").get("email")
+    msg = json[0].get("commit").get("message")
+    url = json[0].get("html_url")
+
     params = {
         "id" : id,
         "nick_name" : nick_name,
-        "json" : json
+        "date" : date,
+        "name" : name,
+        "email" : email,
+        "msg" : msg,
+        "url" : url
     }
     
     url = "https://alarm-bot-repo.herokuapp.com/api/"
