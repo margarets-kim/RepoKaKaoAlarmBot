@@ -66,6 +66,7 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
         curs.execute(sql,(updated_date,id,fav_repository))
     print(json)
 
-while True:    # while에 True를 지정하면 무한 루프
-    batch()
-    time.sleep(30)
+#while True:    # while에 True를 지정하면 무한 루프
+#    batch()
+#    time.sleep(30)
+batch()

@@ -226,6 +226,7 @@ class SendGitInfo (APIView) :
         except Exception as e :
             return Response(str(e), status=404)
 
+
 # id에 해당하는 nick_name목록 전달
 def sendList (kakao_id) :
     try : 
