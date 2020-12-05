@@ -199,6 +199,9 @@ class SendGitInfo (APIView) :
             id = request.query_params.get('id', '')
             nick_name = request.query_params.get('nick_name', '')
 
+            repo_url = []
+            repo_branch = []
+
             conn = None
             conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
             curs = conn.cursor()
