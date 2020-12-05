@@ -131,6 +131,7 @@ def batch(id,fav_repository,nick_name,type,branch):
 class GetRepoInfo (APIView) :
     def get (self, request) :
         try :
+            # parameter로 id, repo 가져옴
             id = request.query_params.get('id', '')
             repo = request.query_params.get('repo', '')
 
