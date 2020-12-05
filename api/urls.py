@@ -8,5 +8,6 @@ urlpatterns = [
     path('barcode/', views.barcode),
     path('repoList/', views.repoList),
     path('repoStatus/', views.repoStatus),
-    path('info/', views.GetRepoInfo.as_view())
+    path('info/', views.GetRepoInfo.as_view()),
+    path('alias/', views.SendAlias.as_view())
 ]
