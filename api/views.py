@@ -22,10 +22,11 @@ class UserView(APIView):
         nick_name = request.POST.get('nick_name', '')
         type = request.POST.get('type', '')
         branch = request.POST.get('branch', '')
+        print(id)
         try:
             conn = None
-            if len(id) == 0:
-                raise Exception('아이디는 비어 있으면 안됩니다.')
+            ##if len(id) == 0:
+            ##    raise Exception('아이디는 비어 있으면 안됩니다.')
             if len(fav_repository) == 0:
                 raise Exception('관심 레파지토리는 비어 있으면 안됩니다.')
             if len(nick_name) == 0:
