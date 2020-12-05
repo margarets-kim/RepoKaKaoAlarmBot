@@ -23,14 +23,15 @@ def batch():
             if dataList[0] == 404:
                 raise Exception('GITHUB API 호출할때 문제가 생겼습니다.')
             if dataList[1] != i[2]:  # dataList[1]은 깃 업데이트날, i[2]은 db상 저장된 깃 업데이트날
+
                 sql = "UPDATE repository SET GIT_UPDATED_AT=%s,UPDATED_AT=%s WHERE FAV_REPOSITORY = %s"
                 curs.execute(sql, (dataList[1], time, i[1]))
 
-                sql = "SELECT b.id,b.nick_name,b.type,a.git_api_address,a.fav_repository FROM repository a LEFT JOIN user b ON a.fav_repository = b.fav_repository WHERE a.fav_repository=%s";
+                sql = "SELECT b.id,b.nick_name,b.type,a.git_api_address,a.fav_repository,b.user_get_date FROM repository a LEFT JOIN user b ON a.fav_repository = b.fav_repository WHERE a.fav_repository=%s";
                 curs.execute(sql, [i[1]])
 
-                result = curs.fetchall()
-                for j in result:
+                result2 = curs.fetchall()
+                for j in result2:
                     str = j[3]
                     index = str.find('branches')
                     url = str[:index]+"commits"
@@ -44,7 +45,7 @@ def batch():
                         timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
                         content = requests.get(url,headers={'Authorization':'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'},params={'sha':branch,'since':timestampStr})
                         jsonObject = json.loads(content.content)
-                        telegram(j[0],j[1],j[4],jsonObject) # 이 부분 수정 필요
+                        telegram(j[0],j[1],j[4],j[5],dataList[1],jsonObject,conn) # 이 부분 수정 필요
         conn.commit()
     except Exception as e:
         raise Exception('GITHUB API 호출할때 문제가 생겼습니다.')
@@ -52,9 +53,19 @@ def batch():
         if conn != None:
             conn.close()
 
-def telegram(id,nick_name,fav_repository,json) :
+def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # 데이터 업데이트를 한다. 텔레그램의 경우 그리고 api를 쏜다.
+    output_dict = None;
+    curs = conn.cursor()
+
+    if json!=[] :
+        date = datetime.strptime(user_date, '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+0)
+        timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
+        json = [json for json in json if json['commit']['committer']['date'] > timestampStr]
+
+        sql = "UPDATE user SET user_get_date=%s,updated_at=(SELECT DATE_FORMAT(NOW(),'%%Y%%m%%d%%H%%i%%s')) WHERE id = %s AND type='telegram' AND fav_repository=%s"
+        curs.execute(sql,(updated_date,id,fav_repository))
     print(json)
-    #json에서 tree->url 객체를 얻어낸 후 그거 그대로 api 호출 시 tree가 나오는데 그 정보 이용하면 됨.
 
 while True:    # while에 True를 지정하면 무한 루프
     batch()
+    time.sleep(30)
