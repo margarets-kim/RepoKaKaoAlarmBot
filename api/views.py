@@ -74,8 +74,8 @@ class UserView(APIView):
         branch = request.GET.get('branch', '')
 
         try:
-            if len(id) == 0:
-                raise Exception('아이디는 비어 있으면 안됩니다.')
+            #if len(id) == 0:
+            #    raise Exception('아이디는 비어 있으면 안됩니다.')
             if len(fav_repository) == 0:
                 raise Exception('관심 레파지토리는 비어 있으면 안됩니다.')
             if len(nick_name) == 0:
