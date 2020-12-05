@@ -145,6 +145,7 @@ class GetRepoInfo (APIView) :
             url_repos = "https://api.github.com/repos"+url[index:]
             url_branches = "https://api.github.com/repos"+url[index:]+"/branches"
 
+            # github api에서 정보 가져옴
             content_repos = requests.get(url_repos, headers={'Authorization': 'token 6f6d00c786cd3662b25716bf6c6fb6a2084f401d'})
             jsonObject_repos = json.loads(content_repos.content)
 
