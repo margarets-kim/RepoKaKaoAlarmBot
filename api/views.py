@@ -193,6 +193,33 @@ class SendAlias (APIView) :
         except Exception as e :
             return Response(str(e), status=404)
 
+class SendGitInfo (APIView) :
+    def get (self, request) :
+        try :
+            id = request.query_params.get('id', '')
+            nick_name = request.query_params.get('nick_name', '')
+
+            conn = None
+            conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+            curs = conn.cursor()
+
+            sql = 'SELECT fav_repository FROM user WHERE id = %s and nick_name = %s;'
+            curs.execute(sql, (id, nick_name))
+            result = curs.fetchall()
+
+            for i in result :
+                index = i[0].find('branches')-1
+                repo_url = i[0][:index]
+                index = i[0].rfind('/')+1
+                repo_branch = i[0][index:]
+
+            json_git = {"repoUrl" : repo_url, "repoBranch" : repo_branch}
+            
+            return Response(json_git, status=200)
+
+        except Exception as e :
+            return Response(str(e), status=404)
+
 
 def sendList (kakao_id) :
     try : 
@@ -215,8 +242,6 @@ def sendList (kakao_id) :
 
 def returnGit (id, nick_name) :
     try : 
-        repoList = []
-
         conn = None
         conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
         curs = conn.cursor()
