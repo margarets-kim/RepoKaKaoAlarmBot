@@ -67,7 +67,7 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
         curs.execute(sql,(updated_date,id,fav_repository))
     print(json)
     
-    parmas = {
+    params = {
         "id" : id,
         "nick_name" : nick_name,
         "json" : json
@@ -75,7 +75,7 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
     
     url = "https://alarm-bot-repo.herokuapp.com/api/"
 
-    res = requests.get(url, parmas=parmas)
+    res = requests.get(url, params=params)
     print(res)
 
 #while True:    # while에 True를 지정하면 무한 루프
