@@ -62,9 +62,21 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
         timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
         json = [json for json in json if json['commit']['committer']['date'] > timestampStr]
 
+
         sql = "UPDATE user SET user_get_date=%s,updated_at=(SELECT DATE_FORMAT(NOW(),'%%Y%%m%%d%%H%%i%%s')) WHERE id = %s AND type='telegram' AND fav_repository=%s"
         curs.execute(sql,(updated_date,id,fav_repository))
     print(json)
+    
+    parmas = {
+        "id" : id,
+        "nick_name" : nick_name,
+        "json" : json
+    }
+    
+    url = "https://alarm-bot-repo.herokuapp.com/api/"
+
+    res = requests.get(url, parmas=parmas)
+    print(res)
 
 #while True:    # while에 True를 지정하면 무한 루프
 #    batch()
