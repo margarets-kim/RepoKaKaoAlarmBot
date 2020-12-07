@@ -82,20 +82,12 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
         "msg" : msg,
         "url" : url
     }
-    print(id)
-    print(nick_name)
-    print(date)
-    print(name)
-    print(email)
-    print(msg)
-    print(url)
     
     url = "https://alarm-bot-repo.herokuapp.com/api/"
 
     res = requests.get(url, params=params)
     print(res)
 
-#while True:    # while에 True를 지정하면 무한 루프
-#    batch()
-#    time.sleep(30)
-batch()
+while True:    # while에 True를 지정하면 무한 루프
+    batch()
+    time.sleep(30)

@@ -15,7 +15,6 @@ class UserView(APIView):
         nick_name = request.POST.get('nick_name', '')
         type = request.POST.get('type', '')
         branch = request.POST.get('branch', '')
-        print(id)
         try:
             conn = None
             if len(id) == 0:
@@ -29,7 +28,6 @@ class UserView(APIView):
             if len(branch) == 0:
                 raise Exception('브랜치명은 비어 있으면 안됩니다.')
             conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com',charset='utf8')
-            #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
             curs = conn.cursor()
 
             sql = "SELECT DATE_FORMAT(NOW(),'%Y%m%d%H%i%s');"
