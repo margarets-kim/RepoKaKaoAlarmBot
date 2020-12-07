@@ -100,7 +100,7 @@ PythonAnywhere는 Django를 운영하는데 가장 효율적으로 서비스를 
 ```json
 {
     "code": 404,
-    "message": 브랜치명은 비어 있으면 안됩니다.",
+    "message": "브랜치명은 비어 있으면 안됩니다.",
 }
 ```
 
@@ -282,8 +282,11 @@ MySQL이 가지는 장점은 다음과 같습니다.
 ![erd.jpg](./erd.JPG)
 
 # BACK-END 배치 프로그램
+
 ##순서도
 ![flowChart.jpg](./flowChart.JPG)
+
+
 ##프로그램 코드(cron.py)
 ```
 def batch():
