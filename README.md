@@ -100,43 +100,34 @@ PythonAnywhere는 Django를 운영하는데 가장 효율적으로 서비스를 
 ```json
 {
     "code": 404,
-    "message": "브랜치명은 비어 있으면 안됩니다.",
+    "message": "브랜치명은 비어 있으면 안됩니다."
 }
 ```
 
 ## 회원가입
 **요청:**
 ```json
-POST "http://margarets.pythonanywhere.com/api/"
-Accept: application/json
-Content-Type: application/json
+POST http://margarets.pythonanywhere.com/api/
 
+Request body:
 {
     "id":"shchoi",
-    "fav_repository":"https://github.com/margarets-kim/RepoKaKaoAlarmBot"
-    "nick_name":"csh"
-    "type":"kakao"
+    "fav_repository":"https://github.com/margarets-kim/RepoKaKaoAlarmBot",
+    "nick_name":"csh",
+    "type":"kakao",
     "branch":"main" 
 }
 ```
 **성공시:**
 ```json
-HTTP/1.1 200
-Server: margarets.pythonanywhere.com
-Content-Type: application/json
-
 {
     "code": 200,
-    "message": "정상적으로 api 호출 완료",
+    "message": "정상적으로 api 호출 완료"
 }
 ``` 
 
 **실패시:**
 ```json
-HTTP/1.1 404
-Server: margarets.pythonanywhere.com
-Content-Type: application/json
-
 {
    "code": "404",
    "message": "브랜치명은 비어 있으면 안됩니다."
@@ -147,15 +138,13 @@ Content-Type: application/json
 **요청:**
 ```json
 GET "http://margarets.pythonanywhere.com/api/?id=tjdgns461&fav_repository=https://github.com/margarets-kim/RepoKaKaoAlarmBot&nick_name=뚱이&type=kakao&branch=main"
-Accept: application/json
-Content-Type: application/json
 ```
 
 | 파라미터 | 의미 
 |---|:---:|
 | `id` | 등록된 유저 아이디 정보
 | `fav_repository` | 등록된 유저가 관심등록한 레파지토리
-| `nick_name` | 위치 상 부모(조상)요소를 기준으로 배치
+| `nick_name` | 유저가 등록한 닉네임
 | `type` | sns 타입
 | `branch` | 관심 레파지토리의 브랜치명
 
@@ -249,10 +238,6 @@ Content-Type: application/json
 
 **실패시:**
 ```json
-HTTP/1.1 404
-Server: margarets.pythonanywhere.com
-Content-Type: application/json
-
 {
    "code": "404",
    "message": "깃 허브 API 호출시 문제가 발생 하였습니다."
@@ -283,9 +268,10 @@ MySQL이 가지는 장점은 다음과 같습니다.
 
 # BACK-END 배치 프로그램
 
-##순서도
-![flowChart.jpg](./flowChart.JPG)
-
+## 프로그램 개요
+30분 주기로 배치 프로그램을 실행합니다. 레파지토리 테이블에서 등록된 레파지토리를 가지고 와서 
+헤당 레파지토리의 변경 이력을 깃 API로 조회 합니다. 만약 변경 이력이 존재 한다면 해당 레파지토리에 관심을 가지고 있는
+유저들에게 변경 되었다는 알림을 보냅니다(현재는 텔레그램 서비스만 정상적으로 작동중 입니다.)
 
 ##프로그램 코드(cron.py)
 ```
