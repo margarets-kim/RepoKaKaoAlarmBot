@@ -1,7 +1,8 @@
 import MySQLdb,threading,time,requests,json
 from api.githubApi import getRepositoryInfo
 from datetime import datetime, timedelta
-from urllib import parse
+#from urllib import parse
+from urllib.parse import urlencode, quote_plus
 
 def changeKST(ISO):
     yyyymmdd, time = ISO.split('T')
@@ -103,7 +104,8 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json_data,conn) 
     telegramBotToken = "1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI"
     telegramChatId = id
     query = json.dumps(content)
-    text = urllib.parse.urlencode(query, doseq=True)
+    #text = parse.urlencode(query, doseq=True)
+    text = urlencode(query, quote_via=quote_plus)
 
     url = "https://api.telegram.org/bot" + telegramBotToken + "/sendMessage?chat_id=" + telegramChatId + "&text=" + text
 
