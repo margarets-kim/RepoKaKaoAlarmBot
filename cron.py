@@ -103,9 +103,8 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json_data,conn) 
 
     telegramBotToken = "1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI"
     telegramChatId = id
-    query = parse.parse_qs(content)
-    text = parse.urlencode(query, doseq=True)
-
+    text = parse.quote_plus(content)
+    print(text)
     url = "https://api.telegram.org/bot" + telegramBotToken + "/sendMessage?chat_id=" + telegramChatId + "&text=" + text
 
     res = requests.get(url)
