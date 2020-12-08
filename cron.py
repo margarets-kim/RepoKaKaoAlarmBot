@@ -1,8 +1,8 @@
 import MySQLdb,threading,time,requests,json
 from api.githubApi import getRepositoryInfo
 from datetime import datetime, timedelta
-#from urllib import parse
-from urllib.parse import urlencode, quote_plus
+from urllib import parse
+
 
 def changeKST(ISO):
     yyyymmdd, time = ISO.split('T')
