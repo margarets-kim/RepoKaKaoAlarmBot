@@ -68,27 +68,27 @@ def batch():
         if conn != None:
             conn.close()
 
-def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # 데이터 업데이트를 한다. 텔레그램의 경우 그리고 api를 쏜다.
+def telegram(id,nick_name,fav_repository,user_date,updated_date,json_data,conn) : # 데이터 업데이트를 한다. 텔레그램의 경우 그리고 api를 쏜다.
     output_dict = None
     curs = conn.cursor()
 
-    if json!=[] :
+    if json_data!=[] :
         date = datetime.strptime(user_date, '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+0)
         timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
-        json = [json for json in json if json['commit']['committer']['date'] > timestampStr]
+        json_data = [json_data for json_data in json_data if json_data['commit']['committer']['date'] > timestampStr]
 
 
         sql = "UPDATE user SET user_get_date=%s,updated_at=(SELECT DATE_FORMAT(NOW(),'%%Y%%m%%d%%H%%i%%s')) WHERE id = %s AND type='telegram' AND fav_repository=%s"
         curs.execute(sql,(updated_date,id,fav_repository))
     
-    date = json[0].get("commit").get("committer").get("date")
+    date = json_data[0].get("commit").get("committer").get("date")
     KST = changeKST(date)
 
-    name = json[0].get("commit").get("committer").get("name")
-    email = json[0].get("commit").get("committer").get("email")
-    msg = json[0].get("commit").get("message")
+    name = json_data[0].get("commit").get("committer").get("name")
+    email = json_data[0].get("commit").get("committer").get("email")
+    msg = json_data[0].get("commit").get("message")
 
-    url = json[0].get("html_url")
+    url = json_data[0].get("html_url")
 
     index = fav_repository.find('branches')-1
     repo_url = fav_repository[:index]
