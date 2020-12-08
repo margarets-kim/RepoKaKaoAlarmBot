@@ -54,7 +54,7 @@ def batch():
             conn.close()
 
 def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # 데이터 업데이트를 한다. 텔레그램의 경우 그리고 api를 쏜다.
-    output_dict = None;
+    output_dict = None
     curs = conn.cursor()
 
     if json!=[] :
@@ -65,7 +65,6 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
 
         sql = "UPDATE user SET user_get_date=%s,updated_at=(SELECT DATE_FORMAT(NOW(),'%%Y%%m%%d%%H%%i%%s')) WHERE id = %s AND type='telegram' AND fav_repository=%s"
         curs.execute(sql,(updated_date,id,fav_repository))
-    print(json)
     
     date = json[0].get("commit").get("committer").get("date")
     name = json[0].get("commit").get("committer").get("name")
@@ -83,11 +82,16 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
         "url" : url
     }
     
-    url = "https://alarm-bot-repo.herokuapp.com/api/"
+    KST = changeKST(date)
 
-    res = requests.get(url, params=params)
+    telegramBotToken = "1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI"
+    telegramChatId = id
+    text = "[" + nick_name + "] 최근 커밋 이력입니다.\n날짜 : " + KST + "\n이름 : " + name + "\n이메일 : " + email + "\n커밋메세지 : " + msg + "\n주소 : " + url 
+    
+
+    #url = "https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${telegramChatId}&text=${text}"
+    url = "https://api.telegram.org/bot1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI/sendMessage?chat_id=1100956819&text=%EB%A0%88%ED%8F%AC%EC%A7%80%ED%86%A0%EB%A6%AC%EA%B0%80%20%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8%EB%90%90%EC%96%B4!%0A%EC%9D%B4%EB%A6%84%20%3A%20%EB%B3%84%EB%AA%85%EB%B3%84%EB%AA%85%20(%EC%A7%84%EC%A7%9C%EC%9D%B4%EB%A6%84)%0A%EB%B8%8C%EB%9E%9C%EC%B9%98%20%3A%20%EB%B8%8C%EB%9E%9C%EC%B9%98%EC%9D%B4%EB%A6%84%0A--%EC%BB%A4%EB%B0%8B%EC%9D%B4%EB%A0%A5--%0A%EB%82%A0%EC%A7%9C%20%3A%202020-11-11T11%3A11%3A11Z%0A%EC%9D%B4%EB%A6%84%20%3A%20%ED%99%8D%EA%B8%B8%EB%8F%99%0A%EC%9D%B4%EB%A9%94%EC%9D%BC%20%3A%20min01134%40naver.com%0A%EC%BB%A4%EB%B0%8B%20%EB%A9%94%EC%84%B8%EC%A7%80%20%3A%20%EC%BB%A4%EB%B0%8B%EB%A9%94%EC%84%B8%EC%A7%80%EC%BB%A4%EB%B0%8B%0A%EC%A3%BC%EC%86%8C%20%3A%20https%3A%2F%2Fgithub.com%2Fmargarets-kim%2FRKAB_web%2Fcommit%2Ff2eba1d9660d73da4865e222a9b687fe35e0fde4"
+    res = requests.get(url)
     print(res)
 
-while True:    # while에 True를 지정하면 무한 루프
-    batch()
-    time.sleep(30)
+batch()
