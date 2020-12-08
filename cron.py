@@ -3,7 +3,19 @@ import re
 from api.githubApi import getRepositoryInfo
 from datetime import datetime, timedelta
 from urllib import parse
-from views import changeKST
+
+def changeKST(ISO):
+    yyyymmdd, time = ISO.split('T')
+    yyyy, mm, dd = yyyymmdd.split('-')
+    hour, minute, second = time.split(':')
+    second,Z = second.split('Z')
+    hour=int(hour)+9
+    if hour>=24:
+        hour-=24
+    hour=str(hour)
+    #KST = yyyy + "년" + mm + "월" + dd + "일 " + hour + "시" + minute + "분" + second + "초"
+    KST = yyyymmdd + " " + hour + ":" + minute + ":" + second
+    return KST
 
 def batch():
     print("깃 허브쪽 배치 프로그램이 돌고 있습니다.")  # 배치 프로그램이 돌고 있다는 로그남김 log
