@@ -99,7 +99,7 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
     repo_branch = fav_repository[index:]
 
     content = f"———————\n📣업데이트 알림!📣\n\nRepo : {nick_name} ({repo_url})\nBranch : {repo_branch}\n\n——커밋 이력——\nDate : {KST}\nauthor : {name}\nEmail : {email}\nMessage : {msg}\n🔗URL\n{url}\n———————"
-    json_content = { "content" : content }
+    json_content = { 'content' : content }
     print(content)
 
     telegramBotToken = "1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI"
