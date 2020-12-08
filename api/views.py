@@ -15,7 +15,6 @@ class UserView(APIView):
         nick_name = request.POST.get('nick_name', '')
         type = request.POST.get('type', '')
         branch = request.POST.get('branch', '')
-        print(id)
         try:
             conn = None
             if len(id) == 0:
@@ -29,7 +28,6 @@ class UserView(APIView):
             if len(branch) == 0:
                 raise Exception('브랜치명은 비어 있으면 안됩니다.')
             conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com',charset='utf8')
-            #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
             curs = conn.cursor()
 
             sql = "SELECT DATE_FORMAT(NOW(),'%Y%m%d%H%i%s');"
@@ -246,7 +244,7 @@ def sendList (kakao_id) :
         return repoList
 
     except Exception as e :
-        return print(str(e))
+        return print("error")
 
 # id와 nick_name에 해당하는 레포 전달
 def returnGit (id, nick_name) :
@@ -268,7 +266,7 @@ def returnGit (id, nick_name) :
         return repo_url, repo_branch
 
     except Exception as e :
-        return print(str(e))
+        return print("error")
 
 def insertDb (id, fav_repository, type, nick_name, branch) :
     try:
@@ -311,7 +309,7 @@ def insertDb (id, fav_repository, type, nick_name, branch) :
     except Exception as e:
         if conn != None:
             conn.rollback()
-        return print(str(e))
+        return print("error")
         
     finally:
         if conn != None:

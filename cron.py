@@ -1,6 +1,21 @@
 import MySQLdb,threading,time,requests,json
 from api.githubApi import getRepositoryInfo
 from datetime import datetime, timedelta
+#from urllib import parse
+from urllib.parse import urlencode, quote_plus
+
+def changeKST(ISO):
+    yyyymmdd, time = ISO.split('T')
+    yyyy, mm, dd = yyyymmdd.split('-')
+    hour, minute, second = time.split(':')
+    second,Z = second.split('Z')
+    hour=int(hour)+9
+    if hour>=24:
+        hour-=24
+    hour=str(hour)
+    #KST = yyyy + "년" + mm + "월" + dd + "일 " + hour + "시" + minute + "분" + second + "초"
+    KST = yyyymmdd + " " + hour + ":" + minute + ":" + second
+    return KST
 
 def batch():
     print("깃 허브쪽 배치 프로그램이 돌고 있습니다.")  # 배치 프로그램이 돌고 있다는 로그남김 log
@@ -53,39 +68,48 @@ def batch():
         if conn != None:
             conn.close()
 
-def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # 데이터 업데이트를 한다. 텔레그램의 경우 그리고 api를 쏜다.
-    output_dict = None;
+def telegram(id,nick_name,fav_repository,user_date,updated_date,json_data,conn) : # 데이터 업데이트를 한다. 텔레그램의 경우 그리고 api를 쏜다.
+    output_dict = None
     curs = conn.cursor()
 
-    if json!=[] :
+    if json_data!=[] :
         date = datetime.strptime(user_date, '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+0)
         timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")
-        json = [json for json in json if json['commit']['committer']['date'] > timestampStr]
+        json_data = [json_data for json_data in json_data if json_data['commit']['committer']['date'] > timestampStr]
 
 
         sql = "UPDATE user SET user_get_date=%s,updated_at=(SELECT DATE_FORMAT(NOW(),'%%Y%%m%%d%%H%%i%%s')) WHERE id = %s AND type='telegram' AND fav_repository=%s"
         curs.execute(sql,(updated_date,id,fav_repository))
     
-    date = json[0].get("commit").get("committer").get("date")
-    name = json[0].get("commit").get("committer").get("name")
-    email = json[0].get("commit").get("committer").get("email")
-    msg = json[0].get("commit").get("message")
-    url = json[0].get("html_url")
+    date = json_data[0].get("commit").get("committer").get("date")
+    KST = changeKST(date)
 
-    params = {
-        "id" : id,
-        "nick_name" : nick_name,
-        "date" : date,
-        "name" : name,
-        "email" : email,
-        "msg" : msg,
-        "url" : url
-    }
+    name = json_data[0].get("commit").get("committer").get("name")
+    email = json_data[0].get("commit").get("committer").get("email")
+    msg = json_data[0].get("commit").get("message")
+
+    url = json_data[0].get("html_url")
+
+    index = fav_repository.find('branches')-1
+    repo_url = fav_repository[:index]
+    index2 = repo_url.rfind('/')
+    repo_url = repo_url[index2:]
     
-    url = "https://alarm-bot-repo.herokuapp.com/api/"
+    index = fav_repository.rfind('/')+1
+    repo_branch = fav_repository[index:]
 
-    res = requests.get(url, params=params)
-    print(res)
+    content = f"———————\n📣업데이트 알림!📣\n\nRepo : {nick_name} ({repo_url})\nBranch : {repo_branch}\n\n——커밋 이력——\nDate : {KST}\nauthor : {name}\nEmail : {email}\nMessage : {msg}\n🔗URL\n{url}\n———————"
+    print(content)
+
+    telegramBotToken = "1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI"
+    telegramChatId = id
+    query = json.dumps(content)
+    #text = parse.urlencode(query, doseq=True)
+    text = quote_plus(query)
+
+    url = "https://api.telegram.org/bot" + telegramBotToken + "/sendMessage?chat_id=" + telegramChatId + "&text=" + text
+
+    res = requests.get(url)
 
 #while True:    # while에 True를 지정하면 무한 루프
 #    batch()
