@@ -65,7 +65,6 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # ë
 
         sql = "UPDATE user SET user_get_date=%s,updated_at=(SELECT DATE_FORMAT(NOW(),'%%Y%%m%%d%%H%%i%%s')) WHERE id = %s AND type='telegram' AND fav_repository=%s"
         curs.execute(sql,(updated_date,id,fav_repository))
-    print(json)
     
     date = json[0].get("commit").get("committer").get("date")
     name = json[0].get("commit").get("committer").get("name")
@@ -82,13 +81,6 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # ë
         "msg" : msg,
         "url" : url
     }
-    print(id)
-    print(nick_name)
-    print(date)
-    print(name)
-    print(email)
-    print(msg)
-    print(url)
     
     url = "https://alarm-bot-repo.herokuapp.com/api/"
 
