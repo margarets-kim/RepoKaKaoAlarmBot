@@ -328,6 +328,103 @@ Content-Type: application/json
 }
 ```
 
+## 유저 새 레포지토리 등록 요청
+
+유저가 서버에 새 레포지토리를 등록하는 요청입니다
+
+```json
+POST "http://margarets.pythonanywhere.com/api/"
+```
+
+| 파라미터         |                의미                 |
+| ---------------- | :---------------------------------: |
+| `id`             |       등록된 유저 아이디 정보       |
+| `fav_repository` | 등록된 유저가 관심등록한 레파지토리 |
+| `nick_name`      |        유저가 등록한 닉네임         |
+| `type`           |              sns 타입               |
+| `branch`         |     관심 레파지토리의 브랜치명      |
+
+**성공시:**
+
+```json
+HTTP/1.1 200
+Server: margarets.pythonanywhere.com
+Content-Type: application/json
+{
+    "정상적으로 api 호출 완료"
+}
+```
+
+**실패시:**
+
+```json
+HTTP/1.1 404
+Server: margarets.pythonanywhere.com
+Content-Type: application/json
+{
+    "정상적이지 않은 {변수 이름} 입니다"
+}
+```
+
+## 유저기 요청한 닉네임 레포지토리의 실제 레포지토리 정보 요청
+
+유저가 저장한 별명 레포지토리의 실제 정보를 가져오는 요청입니다.\
+새로운 정보가 갱신되었는지 확인하기 전에 먼저 실행되는 api 요청함수입니다
+
+**요청:**
+
+```json
+GET "http://margarets.pythonanywhere.com/api/git/?id={id}&&nick_name={nick_name}}"
+```
+
+| 파라미터    |          의미           |
+| ----------- | :---------------------: |
+| `id`        | 등록된 유저 아이디 정보 |
+| `nick_name` |  유저가 등록한 닉네임   |
+
+**성공시:**
+
+```json
+HTTP/1.1 200
+Server: margarets.pythonanywhere.com
+Content-Type: application/json
+{
+    "repoUrl": "https://github.com/margarets-kim/telegram_githubell",
+    "repoBranch": "main"
+}
+```
+
+**실패시:**
+
+```json
+HTTP/1.1 200
+Server: margarets.pythonanywhere.com
+Content-Type: application/json
+{
+    "repoUrl": [], //빈 배열 리턴
+    "repoBranch": []
+}
+}
+```
+
+## 유저 레포지토리 저장 정보 요청
+
+변경사항이 있는지 앞서 실제 레포지토리의 정보를 들고온 후 기존 DB와 비교 요청을 하는 api 요청 함수입니다
+
+**요청:**
+
+```json
+GET "http://margarets.pythonanywhere.com/api/?{Params}"
+```
+
+| 파라미터         |                의미                 |
+| ---------------- | :---------------------------------: |
+| `id`             |       등록된 유저 아이디 정보       |
+| `fav_repository` | 등록된 유저가 관심등록한 레파지토리 |
+| `nick_name`      |        유저가 등록한 닉네임         |
+| `type`           |              sns 타입               |
+| `branch`         |     관심 레파지토리의 브랜치명      |
+
 # DATABASE MODEL - MYSQL
 
 MySQL은 가장 널리 사용되고 있는 관계형 데이터베이스 관리 시스템(RDBMS: Relational DBMS)입니다.
