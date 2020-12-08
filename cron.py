@@ -92,7 +92,7 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # ë
 
     index = fav_repository.find('branches')-1
     repo_url = fav_repository[:index]
-    index = fav_repository.find(/')
+    index = fav_repository.find('/')
     repo_url = fav_repository[index:]
     
     index = fav_repository.rfind('/')+1
