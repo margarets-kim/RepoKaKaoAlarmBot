@@ -85,7 +85,6 @@ def batch(id,fav_repository,nick_name,type,branch):
         conn = None
         fav_repository = fav_repository + "/branches/" + branch
         conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
-        #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
         curs = conn.cursor()
         sql = "SELECT a.git_api_address,a.fav_repository,b.user_get_date FROM repository a inner join user b on a.fav_repository = b.fav_repository WHERE b.id=%s AND b.type=%s AND b.fav_repository=%s";
         curs.execute(sql, (id,type,fav_repository))
@@ -282,7 +281,6 @@ def insertDb (id, fav_repository, type, nick_name, branch) :
         if len(branch) == 0:
             raise Exception('브랜치명은 비어 있으면 안됩니다.')
         conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com',charset='utf8')
-        #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
         curs = conn.cursor()
 
         sql = "SELECT DATE_FORMAT(NOW(),'%Y%m%d%H%i%s');"

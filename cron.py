@@ -99,17 +99,16 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json_data,conn) 
     repo_branch = fav_repository[index:]
 
     content = f"———————\n📣업데이트 알림!📣\n\nRepo : {nick_name} ({repo_url})\nBranch : {repo_branch}\n\n——커밋 이력——\nDate : {KST}\nauthor : {name}\nEmail : {email}\nMessage : {msg}\n🔗URL\n{url}\n———————"
-    print(content)
 
     telegramBotToken = "1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI"
     telegramChatId = id
     text = parse.quote_plus(content)
-    print(text)
+    
     url = "https://api.telegram.org/bot" + telegramBotToken + "/sendMessage?chat_id=" + telegramChatId + "&text=" + text
 
     res = requests.get(url)
 
-#while True:    # while에 True를 지정하면 무한 루프
-#    batch()
-#    time.sleep(30)
-batch()
+while True:    # while에 True를 지정하면 무한 루프
+    batch()
+    time.sleep(60)
+
