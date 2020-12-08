@@ -4,6 +4,7 @@ import os
 import sys
 import MySQLdb
 
+
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RepoKaKaoAlarm.settings')
     try:

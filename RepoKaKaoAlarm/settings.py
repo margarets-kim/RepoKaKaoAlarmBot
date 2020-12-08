@@ -25,7 +25,7 @@ SECRET_KEY = 'u5smkm#@a%l28wey*)tc)2!^x66xm73)8a(3up+9p!7@t2x-3$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['margarets.pythonanywhere.com']
+ALLOWED_HOSTS = ['margarets.pythonanywhere.com', 'localhost', '127.0.0.1']
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
@@ -84,17 +84,17 @@ WSGI_APPLICATION = 'RepoKaKaoAlarm.wsgi.application'
 DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': 'open_source',
-        # 'USER': 'root',
-        # 'PASSWORD': '1234',
-        # 'HOST': 'localhost',
+        'NAME': 'open_source',
+        'USER': 'root',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
         # 'PORT': '3306',
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'margarets$repoalarm',
-        'USER': 'margarets',
-        'PASSWORD': 'db20192808',
-        'HOST': 'margarets.mysql.pythonanywhere-services.com',
-        'PORT': '3306'
+        # 'NAME': 'margarets$repoalarm',
+        # 'USER': 'margarets',
+        # 'PASSWORD': 'db20192808',
+        # 'HOST': 'margarets.mysql.pythonanywhere-services.com',
+        'PORT': '3307'
     }
 }
 
