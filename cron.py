@@ -89,11 +89,16 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
     msg = json[0].get("commit").get("message")
 
     url = json[0].get("html_url")
-    p = re.compile('/(http(s)?:\/\/)(github\.com\/)+([a-z0-9-_\.]*)(\/)+([a-z0-9-_\.]*)/i')
-    print(p.match(fav_repository).group(6))
-    print(p.match(fav_repository).group(8))
 
-    query = "———————\n📣업데이트 알림!📣\n\nRepo : " + nick_name + "(test)\nBranch : test\n\n——커밋 이력——\nDate : " + KST + "\nauthor : " + name + "\nEmail : " + email + "\nMessage : " + msg + "\n🔗URL\n" + url + "\n———————"
+    index = fav_repository.find('branches')-1
+    repo_url = fav_repository[:index]
+    index = fav_repository.find.('/')
+    repo_url = fav_repository[index:]
+    
+    index = fav_repository.rfind('/')+1
+    repo_branch = fav_repository[index:]
+
+    query = "———————\n📣업데이트 알림!📣\n\nRepo : " + nick_name + " ( " + repo_url + ")\nBranch : " + repo_branch + "\n\n——커밋 이력——\nDate : " + KST + "\nauthor : " + name + "\nEmail : " + email + "\nMessage : " + msg + "\n🔗URL\n" + url + "\n———————"
 
     telegramBotToken = "1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI"
     telegramChatId = id
