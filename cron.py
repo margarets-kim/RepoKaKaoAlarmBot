@@ -98,11 +98,12 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
     index = fav_repository.rfind('/')+1
     repo_branch = fav_repository[index:]
 
-    query = "———————\n📣업데이트 알림!📣\n\nRepo : " + nick_name + " ( " + repo_url + ")\nBranch : " + repo_branch + "\n\n——커밋 이력——\nDate : " + KST + "\nauthor : " + name + "\nEmail : " + email + "\nMessage : " + msg + "\n🔗URL\n" + url + "\n———————"
+    content = "———————\n📣업데이트 알림!📣\n\nRepo : " + nick_name + " ( " + repo_url + ")\nBranch : " + repo_branch + "\n\n——커밋 이력——\nDate : " + KST + "\nauthor : " + name + "\nEmail : " + email + "\nMessage : " + msg + "\n🔗URL\n" + url + "\n———————"
+    print(content)
 
     telegramBotToken = "1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI"
     telegramChatId = id
-    query = json.dump(query)
+    query = json.dump(content)
     text = parse.urlencode(query, doseq=True)
 
     url = "https://api.telegram.org/bot" + telegramBotToken + "/sendMessage?chat_id=" + telegramChatId + "&text=" + text
