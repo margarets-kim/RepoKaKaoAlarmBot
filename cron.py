@@ -67,22 +67,10 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # ë
         curs.execute(sql,(updated_date,id,fav_repository))
     print(json)
     
-    date = json[0].get("commit").get("committer").get("date")
-    name = json[0].get("commit").get("committer").get("name")
-    email = json[0].get("commit").get("committer").get("email")
-    msg = json[0].get("commit").get("message")
-    url = json[0].get("html_url")
-
-    params = {
-        "id" : id,
-        "nick_name" : nick_name,
-        "date" : date,
-        "name" : name,
-        "email" : email,
-        "msg" : msg,
-        "url" : url
-    }
-    
+   # date = json[0].get("commit").get("committer").get("date")
+   # name = json[0].get("commit").get("committer").get("name")
+   # email = json[0].get("commit").get("committer").get("email")
+   # msg = json[0].get("commit").get("message")
     #url = "https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${telegramChatId}&text=${text}"
     url = "https://api.telegram.org/bot1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI/sendMessage?chat_id=1100956819&text=%EB%A0%88%ED%8F%AC%EC%A7%80%ED%86%A0%EB%A6%AC%EA%B0%80%20%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8%EB%90%90%EC%96%B4!%0A%EC%9D%B4%EB%A6%84%20%3A%20%EB%B3%84%EB%AA%85%EB%B3%84%EB%AA%85%20(%EC%A7%84%EC%A7%9C%EC%9D%B4%EB%A6%84)%0A%EB%B8%8C%EB%9E%9C%EC%B9%98%20%3A%20%EB%B8%8C%EB%9E%9C%EC%B9%98%EC%9D%B4%EB%A6%84%0A--%EC%BB%A4%EB%B0%8B%EC%9D%B4%EB%A0%A5--%0A%EB%82%A0%EC%A7%9C%20%3A%202020-11-11T11%3A11%3A11Z%0A%EC%9D%B4%EB%A6%84%20%3A%20%ED%99%8D%EA%B8%B8%EB%8F%99%0A%EC%9D%B4%EB%A9%94%EC%9D%BC%20%3A%20min01134%40naver.com%0A%EC%BB%A4%EB%B0%8B%20%EB%A9%94%EC%84%B8%EC%A7%80%20%3A%20%EC%BB%A4%EB%B0%8B%EB%A9%94%EC%84%B8%EC%A7%80%EC%BB%A4%EB%B0%8B%0A%EC%A3%BC%EC%86%8C%20%3A%20https%3A%2F%2Fgithub.com%2Fmargarets-kim%2FRKAB_web%2Fcommit%2Ff2eba1d9660d73da4865e222a9b687fe35e0fde4"
 
