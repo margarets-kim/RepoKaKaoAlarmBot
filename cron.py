@@ -90,8 +90,8 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
 
     url = json[0].get("html_url")
     p = re.compile('/(http(s)?:\/\/)(github\.com\/)+([a-z0-9-_\.]*)(\/)+([a-z0-9-_\.]*)/i')
-    print(p.match('검사할스트링').group(6))
-    print(p.match('검사할스트링').group(8))
+    print(p.match(fav_repository).group(6))
+    print(p.match(fav_repository).group(8))
 
     query = "———————\n📣업데이트 알림!📣\n\nRepo : " + nick_name + "(test)\nBranch : test\n\n——커밋 이력——\nDate : " + KST + "\nauthor : " + name + "\nEmail : " + email + "\nMessage : " + msg + "\n🔗URL\n" + url + "\n———————"
 
