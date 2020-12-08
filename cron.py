@@ -80,6 +80,8 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # ë
 
         sql = "UPDATE user SET user_get_date=%s,updated_at=(SELECT DATE_FORMAT(NOW(),'%%Y%%m%%d%%H%%i%%s')) WHERE id = %s AND type='telegram' AND fav_repository=%s"
         curs.execute(sql,(updated_date,id,fav_repository))
+    
+    date = json[0].get("commit").get("committer").get("date")
     KST = changeKST(date)
 
     name = json[0].get("commit").get("committer").get("name")
