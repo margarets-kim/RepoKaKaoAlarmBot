@@ -92,7 +92,7 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # ë
 
     index = fav_repository.find('branches')-1
     repo_url = fav_repository[:index]
-    index = repo_url.find('/')
+    index2 = repo_url.find('/')
     repo_url = repo_url[index:]
     
     index = fav_repository.rfind('/')+1
@@ -103,7 +103,7 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # ë
 
     telegramBotToken = "1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI"
     telegramChatId = id
-    query = json.dump(content)
+    query = json.dump(str(content))
     text = parse.urlencode(query, doseq=True)
 
     url = "https://api.telegram.org/bot" + telegramBotToken + "/sendMessage?chat_id=" + telegramChatId + "&text=" + text
