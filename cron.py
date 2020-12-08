@@ -69,7 +69,7 @@ def batch():
             conn.close()
 
 def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # 데이터 업데이트를 한다. 텔레그램의 경우 그리고 api를 쏜다.
-    output_dict = None;
+    output_dict = None
     curs = conn.cursor()
 
     if json!=[] :
@@ -98,7 +98,7 @@ def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # �
     index = fav_repository.rfind('/')+1
     repo_branch = fav_repository[index:]
 
-    content = "———————\n📣업데이트 알림!📣\n\nRepo : " + nick_name + " ( " + repo_url + ")\nBranch : " + repo_branch + "\n\n——커밋 이력——\nDate : " + KST + "\nauthor : " + name + "\nEmail : " + email + "\nMessage : " + msg + "\n🔗URL\n" + url + "\n———————"
+    content = f"———————\n📣업데이트 알림!📣\n\nRepo : {nick_name} ( {repo_url})\nBranch : {repo_branch}\n\n——커밋 이력——\nDate : {KST}\nauthor : {name}\nEmail : {email}\nMessage : {msg}\n🔗URL\n{url}\n———————"
     print(content)
 
     telegramBotToken = "1498546920:AAFFE6PJlfZjFvWS51fvwDElA0ay6k96QEI"
