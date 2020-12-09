@@ -224,6 +224,27 @@ class SendGitInfo (APIView) :
             return Response(str(e), status=404)
 
 
+class DeleteRepo (APIView) : 
+    def delete (self, request) :
+        id = request.query_params.get('id', '')
+        nick_name = request.query_params.get('nick_name', '')
+        fav_repository = request.query_params.get('fav_repository')
+
+        try:
+            conn = None
+            conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+            curs = conn.cursor()
+
+            sql = 'DELETE FROM user WHERE id = %s and nick_name = %s;'
+            curs.execute(sql, (id, nick_name))
+            result = curs.fetchall()
+
+            return Response("삭제되었습니다", status=200)
+
+        except Exception as e :
+            return Response(str(e), status=404)
+
+
 # id에 해당하는 nick_name목록 전달
 def sendList (kakao_id) :
     try : 

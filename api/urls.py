@@ -10,5 +10,6 @@ urlpatterns = [
     path('repoStatus/', views.repoStatus),
     path('info/', views.GetRepoInfo.as_view()),
     path('alias/', views.SendAlias.as_view()),
-    path('git/', views.SendGitInfo.as_view())
+    path('git/', views.SendGitInfo.as_view()),
+    path('del/', views.DeleteRepo.as_view())
 ]
